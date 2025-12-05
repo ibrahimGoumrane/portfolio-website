@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Github, Linkedin, Download, Globe } from "lucide-react"
-import { useLanguage } from "@/lib/language-context"
+import Link from "next/link";
+import { Github, Linkedin, Download, Globe } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
 
 export function Header() {
-  const { language, setLanguage, t } = useLanguage()
+  const { language, setLanguage, t } = useLanguage();
 
   return (
     <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
@@ -17,19 +17,34 @@ export function Header() {
           IG
         </Link>
         <nav className="hidden md:flex gap-6">
-          <Link href="#about" className="text-foreground/70 hover:text-primary transition">
+          <Link
+            href="#about"
+            className="text-foreground/70 hover:text-primary transition"
+          >
             {t("nav.about")}
           </Link>
-          <Link href="#skills" className="text-foreground/70 hover:text-primary transition">
+          <Link
+            href="#skills"
+            className="text-foreground/70 hover:text-primary transition"
+          >
             {t("nav.skills")}
           </Link>
-          <Link href="#experience" className="text-foreground/70 hover:text-primary transition">
+          <Link
+            href="#experience"
+            className="text-foreground/70 hover:text-primary transition"
+          >
             {t("nav.experience")}
           </Link>
-          <Link href="#software" className="text-foreground/70 hover:text-primary transition">
+          <Link
+            href="#software"
+            className="text-foreground/70 hover:text-primary transition"
+          >
             {t("nav.projects")}
           </Link>
-          <Link href="#contact" className="text-foreground/70 hover:text-primary transition">
+          <Link
+            href="#contact"
+            className="text-foreground/70 hover:text-primary transition"
+          >
             {t("nav.contact")}
           </Link>
         </nav>
@@ -60,7 +75,7 @@ export function Header() {
             <Github className="w-5 h-5" />
           </a>
           <a
-            href="https://linkedin.com/in/ibrahimgoumrane"
+            href="https://www.linkedin.com/in/ibrahim-goumrane"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition"
@@ -71,5 +86,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }

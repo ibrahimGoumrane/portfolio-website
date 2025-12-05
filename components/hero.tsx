@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useLanguage } from "@/lib/language-context"
+import { useLanguage } from "@/lib/language-context";
 
 export function Hero() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
 
   return (
     <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
@@ -16,10 +16,12 @@ export function Hero() {
               {t("hero.title2")}
             </span>
           </h1>
-          <p className="text-xl text-muted-foreground mb-6 leading-relaxed max-w-xl">{t("hero.subtitle")}</p>
+          <p className="text-xl text-muted-foreground mb-6 leading-relaxed max-w-xl">
+            {t("hero.subtitle")}
+          </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <a
-              href="https://linkedin.com/in/ibrahimgoumrane"
+              href="https://www.linkedin.com/in/ibrahim-goumrane"
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-3 bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition text-center"
@@ -39,7 +41,9 @@ export function Hero() {
                 <span className="text-primary text-sm">📍</span>
               </div>
               <div>
-                <p className="font-semibold text-foreground">{t("hero.location")}</p>
+                <p className="font-semibold text-foreground">
+                  {t("hero.location")}
+                </p>
                 <p>Casablanca, Morocco</p>
               </div>
             </div>
@@ -48,7 +52,9 @@ export function Hero() {
                 <span className="text-secondary text-sm">📱</span>
               </div>
               <div>
-                <p className="font-semibold text-foreground">{t("hero.contact")}</p>
+                <p className="font-semibold text-foreground">
+                  {t("hero.contact")}
+                </p>
                 <p>+212 776 209 303</p>
               </div>
             </div>
@@ -58,7 +64,7 @@ export function Hero() {
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 rounded-2xl blur-3xl"></div>
             <img
-              src="/software-engineer-portrait.png"
+              src="/main.png"
               alt="Ibrahim Goumrane"
               className="relative rounded-2xl w-full object-cover border-2 border-primary/20"
             />
@@ -66,5 +72,5 @@ export function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }
