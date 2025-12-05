@@ -238,7 +238,7 @@ export function Skills() {
         <h2 className="text-4xl font-bold mb-4 text-balance">
           Skills & <span className="text-primary">Technologies</span>
         </h2>
-        <div className="h-1 w-20 bg-gradient-to-r from-primary via-secondary to-accent rounded-full"></div>
+        <div className="h-1 w-20 bg-linear-to-r from-primary via-secondary to-accent rounded-full"></div>
       </div>
 
       {/* Category Navigation */}

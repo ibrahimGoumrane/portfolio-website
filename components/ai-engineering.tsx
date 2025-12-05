@@ -47,7 +47,7 @@ const projects = [
     title: "OCR Model — Deep Learning Research",
     description:
       "Advanced OCR model specialized in long-sequence text detection using CNN-LSTM architecture. Research focused on CTC loss challenges, alignment strategies, and optimization techniques. Published on Kaggle.",
-    image: "/ocr-optical-character-recognition-deep-learning.jpg",
+    image: "/ocr-text-recognition.jpg",
     technologies: ["PyTorch", "CNN-LSTM", "CTC Loss", "ResNet50", "Kaggle"],
     date: "11/2024 - 02/2025",
     role: "ML Researcher",
