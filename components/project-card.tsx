@@ -1,41 +1,46 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import { ExternalLink } from "lucide-react"
-import { useLanguage } from "@/lib/language-context"
+import { useState, useRef } from "react";
+import Image from "next/image";
+import { ExternalLink } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
 
 interface ProjectCardProps {
   project: {
-    id: number
-    title: string
-    description: string
-    image: string
-    videoUrl?: string
-    technologies: string[]
-    date?: string
-    role?: string
-    isVideo?: boolean
-    github?: string
-    kaggle?: string
-  }
-  isSelected: boolean
-  onSelect: () => void
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    videoUrl?: string;
+    technologies: string[];
+    date?: string;
+    role?: string;
+    isVideo?: boolean;
+    github?: string;
+    kaggle?: string;
+  };
+  isSelected: boolean;
+  onSelect: () => void;
 }
 
-export function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const { t } = useLanguage()
+export function ProjectCard({
+  project,
+  isSelected,
+  onSelect,
+}: ProjectCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { t } = useLanguage();
 
   const handleClick = () => {
     if (project.isVideo) {
-      onSelect()
+      onSelect();
     } else if (project.kaggle) {
-      window.open(project.kaggle, "_blank")
+      window.open(project.kaggle, "_blank");
     } else if (project.github) {
-      window.open(project.github, "_blank")
+      window.open(project.github, "_blank");
     }
-  }
+  };
 
   return (
     <>
@@ -48,10 +53,11 @@ export function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps)
         >
           {/* Image Container */}
           <div className="relative h-64 overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 flex-shrink-0">
-            <img
+            <Image
               src={project.image || "/placeholder.svg"}
               alt={project.title}
-              className={`w-full h-full object-cover transition-transform duration-500 ${
+              fill
+              className={`object-cover transition-transform duration-500 ${
                 isHovered ? "scale-110" : "scale-100"
               }`}
             />
@@ -63,18 +69,30 @@ export function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps)
               {project.isVideo && (
                 <div className="text-center transform transition-transform duration-300">
                   <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-3 border-2 border-white/40">
-                    <svg className="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-10 h-10 text-white ml-1"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                     </svg>
                   </div>
-                  <p className="text-white text-lg font-bold">{t("software.watchDemo")}</p>
-                  <p className="text-white/80 text-sm mt-1">See the project in action</p>
+                  <p className="text-white text-lg font-bold">
+                    {t("software.watchDemo")}
+                  </p>
+                  <p className="text-white/80 text-sm mt-1">
+                    See the project in action
+                  </p>
                 </div>
               )}
               {!project.isVideo && project.kaggle && (
                 <div className="text-center">
                   <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-3 border-2 border-white/40">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <svg
+                      className="w-8 h-8 text-white"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
                       <path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.285.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.071.358z" />
                     </svg>
                   </div>
@@ -102,8 +120,14 @@ export function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps)
                 {project.role}
               </p>
             )}
-            {project.date && <p className="text-xs text-muted-foreground mb-3">{project.date}</p>}
-            <p className="text-foreground/70 text-sm mb-4 flex-grow leading-relaxed">{project.description}</p>
+            {project.date && (
+              <p className="text-xs text-muted-foreground mb-3">
+                {project.date}
+              </p>
+            )}
+            <p className="text-foreground/70 text-sm mb-4 flex-grow leading-relaxed">
+              {project.description}
+            </p>
 
             {/* Technologies */}
             <div className="flex flex-wrap gap-2 mt-auto">
@@ -114,8 +138,8 @@ export function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps)
                     index % 3 === 0
                       ? "bg-primary/15 text-primary border-primary/30"
                       : index % 3 === 1
-                        ? "bg-secondary/15 text-secondary border-secondary/30"
-                        : "bg-accent/15 text-accent border-accent/30"
+                      ? "bg-secondary/15 text-secondary border-secondary/30"
+                      : "bg-accent/15 text-accent border-accent/30"
                   }`}
                 >
                   {tech}
@@ -127,7 +151,10 @@ export function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps)
       </div>
 
       {project.isVideo && isSelected && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/90 z-50 p-4" onClick={onSelect}>
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black/90 z-50 p-4"
+          onClick={onSelect}
+        >
           <div
             className="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-primary/30"
             onClick={(e) => e.stopPropagation()}
@@ -136,16 +163,32 @@ export function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps)
               onClick={onSelect}
               className="absolute top-4 right-4 z-10 p-3 bg-primary hover:bg-primary/80 rounded-full transition"
             >
-              <svg className="w-6 h-6 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6 text-primary-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
-            <video ref={videoRef} src={project.videoUrl} controls autoPlay className="w-full h-full object-contain">
+            <video
+              ref={videoRef}
+              src={project.videoUrl}
+              controls
+              autoPlay
+              className="w-full h-full object-contain"
+            >
               Your browser does not support the video tag.
             </video>
           </div>
         </div>
       )}
     </>
-  )
+  );
 }

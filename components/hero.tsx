@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLanguage } from "@/lib/language-context";
 
 export function Hero() {
@@ -61,12 +62,13 @@ export function Hero() {
           </div>
         </div>
         <div className="hidden md:block">
-          <div className="relative">
+          <div className="relative w-full aspect-square">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 rounded-2xl blur-3xl"></div>
-            <img
+            <Image
               src="/main.png"
               alt="Ibrahim Goumrane"
-              className="relative rounded-2xl w-full object-cover border-2 border-primary/20"
+              fill
+              className="relative rounded-2xl object-cover border-2 border-primary/20"
             />
           </div>
         </div>
