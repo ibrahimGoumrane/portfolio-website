@@ -58,7 +58,7 @@ export function Header() {
             <span>{language.toUpperCase()}</span>
           </button>
           <a
-            href="/resume.pdf"
+            href="/resume/Ibrahim_Goumrane_CV.pdf"
             download="Ibrahim_Goumrane_CV.pdf"
             className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90 transition text-sm font-medium"
           >
