@@ -19,6 +19,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.projects": "Projects",
     "nav.contact": "Contact",
     "nav.downloadResume": "Download CV",
+    "nav.downloadResume.href" : "/resume/Ibrahim_Goumrane_CV_en.pdf",
 
     // Hero
     "hero.title1": "Ibrahim",
@@ -101,6 +102,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.projects": "Projets",
     "nav.contact": "Contact",
     "nav.downloadResume": "Télécharger CV",
+    "nav.downloadResume.href" : "/resume/Ibrahim_Goumrane_CV_fr.pdf",
 
     // Hero
     "hero.title1": "Ibrahim",

@@ -12,7 +12,7 @@ export function Header() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <Link
           href="/"
-          className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+          className="text-2xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent"
         >
           IG
         </Link>
@@ -58,9 +58,9 @@ export function Header() {
             <span>{language.toUpperCase()}</span>
           </button>
           <a
-            href="/resume/Ibrahim_Goumrane_CV.pdf"
-            download="Ibrahim_Goumrane_CV.pdf"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90 transition text-sm font-medium"
+            href={t("nav.downloadResume.href")}
+            download={`Ibrahim_Goumrane_CV_${language}.pdf`}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-linear-to-r from-primary to-accent text-primary-foreground hover:opacity-90 transition text-sm font-medium"
           >
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline">{t("nav.downloadResume")}</span>
