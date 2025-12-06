@@ -28,7 +28,7 @@ const projects = [
     title: "FaceAttendance.AI",
     description:
       "Automated school attendance tracking using facial recognition. Implements real-time face detection and verification with Redis caching for optimal performance in production environments.",
-    image: "/facial-recognition-attendance-tracking-system.jpg",
+    image: "/facial-recognition.jpg",
     technologies: [
       "Django",
       "face_recognition",
