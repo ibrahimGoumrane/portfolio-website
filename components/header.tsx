@@ -47,6 +47,12 @@ export function Header() {
           >
             {t("nav.contact")}
           </Link>
+          <Link
+            href="/partners"
+            className="text-foreground/70 hover:text-primary transition"
+          >
+            {t("partners.nav")}
+          </Link>
         </nav>
         <div className="flex items-center gap-3">
           <button
