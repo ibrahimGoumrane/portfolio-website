@@ -73,42 +73,6 @@ const DOMAINS_DATA = [
   { icon: Server, titleKey: "partners.domains.systems", descKey: "partners.domains.systems.desc" },
 ];
 
-/* ── Project data ──────────────────────────────────────────── */
-const PROJECTS_DATA = [
-  {
-    titleKey: "partners.project.financiana.title",
-    subtitleKey: "partners.project.financiana.subtitle",
-    descKey: "partners.project.financiana.desc",
-    image: "/photo/financiana.png",
-    tech: ["Next.js", "Laravel", "Python", "OCR", "MySQL"],
-    role: "Full-Stack Developer",
-  },
-  {
-    titleKey: "partners.project.recruite.title",
-    subtitleKey: "partners.project.recruite.subtitle",
-    descKey: "partners.project.recruite.desc",
-    image: "/photo/recruite.png",
-    tech: ["React", "Spring Boot", "WebSockets", "JWT", "MySQL"],
-    role: "Tech Lead + Full-Stack",
-  },
-  {
-    titleKey: "partners.project.fastdev.title",
-    subtitleKey: "partners.project.fastdev.subtitle",
-    descKey: "partners.project.fastdev.desc",
-    image: "/photo/fastdev.png",
-    tech: ["React", "Spring Boot", "Gemini API", "Docker SDK"],
-    role: "Full-Stack Developer",
-  },
-  {
-    titleKey: "partners.project.autogradeai.title",
-    subtitleKey: "partners.project.autogradeai.subtitle",
-    descKey: "partners.project.autogradeai.desc",
-    image: "/photo/autogradeai.png",
-    tech: ["Django", "OCR", "OpenAI", "Sentence Transformers"],
-    role: "AI Engineer + Full-Stack",
-  },
-];
-
 /* ── Capability keys ───────────────────────────────────────── */
 const CAPABILITIES_DATA = [
   { icon: Code2, titleKey: "partners.capabilities.fullstack", itemKeys: ["partners.capabilities.fullstack.1", "partners.capabilities.fullstack.2", "partners.capabilities.fullstack.3", "partners.capabilities.fullstack.4"] },
@@ -136,37 +100,9 @@ function useReveal() {
   return { ref, className: `transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}` };
 }
 
-/* ── Animated counter ──────────────────────────────────────── */
-function Counter({ target, suffix }: { target: number; suffix: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          const duration = 1200;
-          const steps = 30;
-          const increment = target / steps;
-          let current = 0;
-          const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) { setCount(target); clearInterval(timer); }
-            else setCount(Math.floor(current));
-          }, duration / steps);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [target]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
+/* ── Static stat display ───────────────────────────────────── */
+function StatValue({ value, suffix }: { value: number; suffix: string }) {
+  return <span>{value}{suffix}</span>;
 }
 
 /* ── Inner page (needs LanguageProvider) ────────────────────── */
@@ -179,7 +115,6 @@ function PartnersContent() {
   const domains = useReveal();
   const capabilities = useReveal();
   const techStack = useReveal();
-  const projects = useReveal();
   const rateCard = useReveal();
   const howItWorks = useReveal();
   const contact = useReveal();
@@ -289,7 +224,7 @@ function PartnersContent() {
               {STATS_DATA.map((stat) => (
                 <div key={stat.labelKey} className="text-center">
                   <p className="text-4xl md:text-5xl font-bold text-primary mb-2">
-                    <Counter target={stat.value} suffix={stat.suffix} />
+                    <StatValue value={stat.value} suffix={stat.suffix} />
                   </p>
                   <p className="text-sm text-muted-foreground font-medium">{t(stat.labelKey)}</p>
                 </div>
