@@ -49,13 +49,13 @@ export const metadata: Metadata = {
     siteName: "Ibrahim Goumrane",
     title: "Ibrahim Goumrane — AI / RAG / Agentic Systems Engineer",
     description,
-    images: [{ url: "/main.png", width: 1200, height: 630, alt: "Ibrahim Goumrane" }],
+    images: [{ url: "/main.jpeg", width: 1200, height: 1600, alt: "Ibrahim Goumrane" }],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Ibrahim Goumrane — AI / RAG / Agentic Systems Engineer",
     description,
-    images: ["/main.png"],
+    images: ["/main.jpeg"],
   },
   icons: {
     icon: [{ url: "/logo.png" }],

@@ -89,7 +89,7 @@ export function Hero() {
             />
             <div className="relative aspect-4/5 overflow-hidden rounded-2xl border border-border bg-card">
               <Image
-                src="/main.png"
+                src="/main.jpeg"
                 alt={tr(hero.portraitAlt)}
                 fill
                 sizes="384px"
