@@ -2,75 +2,149 @@
 
 import Image from "next/image";
 import { useLanguage } from "@/lib/language-context";
+import { hero, identity, metrics, tickerItems } from "@/lib/content";
+import { GhostLink, PrimaryLink } from "./primitives";
 
 export function Hero() {
-  const { t } = useLanguage();
+  const { tr } = useLanguage();
 
   return (
-    <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-      <div className="grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            <span className="text-foreground">{t("hero.title1")}</span>
-            <br />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              {t("hero.title2")}
-            </span>
-          </h1>
-          <p className="text-xl text-muted-foreground mb-6 leading-relaxed max-w-xl">
-            {t("hero.subtitle")}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 mb-8">
-            <a
-              href="https://www.linkedin.com/in/ibrahim-goumrane"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3 bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition text-center"
-            >
-              {t("hero.getInTouch")}
-            </a>
-            <a
-              href="#software"
-              className="px-8 py-3 border border-primary text-primary rounded-lg font-semibold hover:bg-primary/10 transition text-center"
-            >
-              {t("hero.viewWork")}
-            </a>
-          </div>
-          <div className="flex gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                <span className="text-primary text-sm">📍</span>
-              </div>
-              <div>
-                <p className="font-semibold text-foreground">
-                  {t("hero.location")}
-                </p>
-                <p>Casablanca, Morocco</p>
-              </div>
+    <section id="top" className="relative overflow-hidden">
+      {/* Backdrop: engineering grid + two soft colour fields */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div className="bg-grid mask-fade-b absolute inset-0" />
+        <div
+          className="absolute -top-40 -left-32 size-[34rem] rounded-full blur-[110px]"
+          style={{ background: "var(--glow-primary)" }}
+        />
+        <div
+          className="absolute -top-24 right-0 size-[26rem] rounded-full blur-[110px]"
+          style={{ background: "var(--glow-accent)" }}
+        />
+      </div>
+
+      <div className="mx-auto w-full max-w-6xl px-5 pt-28 pb-16 sm:px-8 md:pt-36 md:pb-20 lg:px-10">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.35fr_1fr] lg:gap-16">
+          <div>
+            <div className="reveal flex flex-wrap items-center gap-3">
+              <span className="inline-flex items-center gap-2 rounded-full border border-accent/35 bg-accent-soft px-3 py-1.5 text-xs font-medium text-accent">
+                <span
+                  aria-hidden="true"
+                  className="animate-status size-1.5 rounded-full bg-accent"
+                />
+                {tr(hero.status)}
+              </span>
+              <span className="font-mono text-xs tracking-[0.16em] text-muted-foreground uppercase">
+                {tr(hero.eyebrow)}
+              </span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
-                <span className="text-secondary text-sm">📱</span>
-              </div>
-              <div>
-                <p className="font-semibold text-foreground">
-                  {t("hero.contact")}
-                </p>
-                <p>+212 776 209 303</p>
-              </div>
+
+            <h1
+              className="reveal reveal-mask mt-6 text-[1.9rem] leading-[1.15] font-semibold tracking-tight text-balance sm:text-4xl lg:text-[2.75rem]"
+              style={{ "--reveal-delay": "60ms" } as React.CSSProperties}
+            >
+              {tr(hero.headline)}
+            </h1>
+
+            <p
+              className="reveal mt-5 max-w-[58ch] text-base leading-relaxed text-muted-foreground"
+              style={{ "--reveal-delay": "120ms" } as React.CSSProperties}
+            >
+              {tr(hero.lede)}
+            </p>
+
+            <div
+              className="reveal mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
+              style={{ "--reveal-delay": "180ms" } as React.CSSProperties}
+            >
+              <PrimaryLink href="#flagship">{tr(hero.primaryCta)}</PrimaryLink>
+              <GhostLink href="#contact">{tr(hero.secondaryCta)}</GhostLink>
+            </div>
+
+            <ul
+              className="reveal mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground"
+              style={{ "--reveal-delay": "240ms" } as React.CSSProperties}
+            >
+              <li>{tr(identity.location)}</li>
+              <li>
+                <a
+                  href={`mailto:${identity.email}`}
+                  className="underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                >
+                  {identity.email}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Portrait — decorative on small screens, so it is dropped there */}
+          <div
+            className="reveal reveal-right relative mx-auto hidden w-full max-w-sm lg:block"
+            style={{ "--reveal-delay": "160ms" } as React.CSSProperties}
+          >
+            <div
+              aria-hidden="true"
+              className="absolute -inset-6 rounded-[2rem] blur-3xl"
+              style={{ background: "var(--glow-primary)" }}
+            />
+            <div className="relative aspect-4/5 overflow-hidden rounded-2xl border border-border bg-card">
+              <Image
+                src="/main.png"
+                alt={tr(hero.portraitAlt)}
+                fill
+                sizes="384px"
+                className="object-cover"
+              />
+              {/* A soft vignette settles the photo into the card in dark mode
+                  without tinting the subject. */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 hidden dark:block"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 78% 70% at 50% 40%, transparent 0%, transparent 55%, color-mix(in srgb, var(--card) 85%, transparent) 100%)",
+                }}
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-card/85 to-transparent"
+              />
             </div>
           </div>
         </div>
-        <div className="hidden md:block">
-          <div className="relative w-full aspect-square">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 rounded-2xl blur-3xl"></div>
-            <Image
-              src="/main.png"
-              alt="Ibrahim Goumrane"
-              fill
-              className="relative rounded-2xl object-cover border-2 border-primary/20"
-            />
-          </div>
+
+        {/* Proof strip */}
+        <dl
+          data-reveal-stagger="80"
+          className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border md:mt-20 md:grid-cols-4"
+        >
+          {metrics.map((metric) => (
+            <div key={metric.value} className="reveal reveal-pop bg-card p-5">
+              <dt className="tnum font-mono text-xl font-semibold text-primary-accent sm:text-2xl">
+                {metric.value}
+              </dt>
+              <dd className="mt-1.5 text-xs leading-snug text-muted-foreground sm:text-sm">
+                {tr(metric.label)}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      {/* Stack ticker — decorative, hidden from assistive tech */}
+      <div
+        aria-hidden="true"
+        className="mask-fade-x relative overflow-hidden border-y border-border py-3"
+      >
+        <div className="animate-marquee flex w-max gap-8 pr-8">
+          {[...tickerItems, ...tickerItems].map((item, i) => (
+            <span
+              key={`${item}-${i}`}
+              className="font-mono text-xs tracking-wide whitespace-nowrap text-muted-foreground/70"
+            >
+              {item}
+            </span>
+          ))}
         </div>
       </div>
     </section>
