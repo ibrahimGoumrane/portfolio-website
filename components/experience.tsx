@@ -2,65 +2,52 @@
 
 import { useLanguage } from "@/lib/language-context";
 import { roles, ui } from "@/lib/content";
-import { Section, SectionHeading, StackList } from "./primitives";
+import { DomainTag, Section, SectionHeading, domainStyle } from "./primitives";
 
 export function Experience() {
   const { tr } = useLanguage();
 
   return (
-    <Section id="experience">
-      <SectionHeading
-        eyebrow={tr(ui.sections.experienceEyebrow)}
-        title={tr(ui.sections.experience)}
-        lede={tr(ui.sections.experienceLede)}
-      />
+    <Section id="experience" bleed="graph-paper border-y border-rule">
+      <SectionHeading title={tr(ui.sections.experience)} lede={tr(ui.sections.experienceLede)} />
 
-      <ol className="relative">
-        {/* Timeline rail — decorative */}
-        <span
-          aria-hidden="true"
-          className="absolute top-2 bottom-2 left-[7px] hidden w-px bg-linear-to-b from-primary-accent/50 via-border to-transparent md:block"
-        />
+      <ol className="overflow-hidden rounded-2xl border-2 border-ink bg-paper">
+        {roles.map((role) => {
+          const s = domainStyle[role.domain];
+          return (
+            <li
+              key={role.id}
+              className="grid gap-x-8 gap-y-2 border-b border-rule px-5 py-6 last:border-b-0 sm:px-8 md:grid-cols-[11rem_1fr]"
+            >
+              <div className="flex items-center gap-2.5 md:block">
+                <p className="tnum text-sm font-semibold">{tr(role.period)}</p>
+                {role.current && (
+                  <p className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-ink md:mt-1.5 md:flex">
+                    <span aria-hidden="true" className="size-1.5 rounded-full bg-emerald" />
+                    {tr(ui.statusLabels.building)}
+                  </p>
+                )}
+              </div>
 
-        {roles.map((role, i) => (
-          <li
-            key={role.id}
-            className="reveal relative pb-10 md:pl-10"
-          >
-            {/* Node */}
-            <span
-              aria-hidden="true"
-              className={
-                role.current
-                  ? "absolute top-2 left-0 hidden size-[15px] rounded-full border-2 border-background bg-accent md:block"
-                  : "absolute top-2 left-0 hidden size-[15px] rounded-full border-2 border-background bg-border-strong md:block"
-              }
-            />
-
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="text-base font-semibold">{tr(role.title)}</h3>
-              <span aria-hidden="true" className="text-muted-foreground">
-                ·
-              </span>
-              <span className="text-base text-primary-accent">{role.org}</span>
-            </div>
-
-            <p className="mt-1.5 font-mono text-xs tracking-wide text-muted-foreground">
-              {tr(role.period)}
-              <span aria-hidden="true"> · </span>
-              {tr(role.kind)}
-            </p>
-
-            <p className="mt-3 max-w-[70ch] text-sm leading-relaxed text-foreground/85">
-              {tr(role.summary)}
-            </p>
-
-            <div className="mt-4">
-              <h4 className="sr-only">{tr(ui.stackLabel)}</h4>
-              <StackList items={role.stack} />
-            </div>
-          </li>
-        ))}
+              <div className="min-w-0">
+                <h3 className="semi-wide text-lg leading-snug font-bold">
+                  {tr(role.title)}
+                  <span className="font-normal text-ink-soft">, </span>
+                  <span className={s.ink}>{role.org}</span>
+                </h3>
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <DomainTag domain={role.domain} />
+                  <span className="text-xs text-ink-soft">{tr(role.kind)}</span>
+                </div>
+                <p className="mt-3 max-w-[72ch] text-sm leading-relaxed">{tr(role.summary)}</p>
+                <p className="mt-3 text-xs text-ink-soft">
+                  <span className="sr-only">{tr(ui.stackLabel)}: </span>
+                  {role.stack.join(", ")}
+                </p>
+              </div>
+            </li>
+          );
+        })}
       </ol>
     </Section>
   );

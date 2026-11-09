@@ -1,20 +1,15 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
-import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
-const inter = Inter({
+// One family throughout; headlines use the width axis (see `.wide`).
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains",
+  axes: ["wdth"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
@@ -67,26 +62,16 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   // No maximum-scale / user-scalable — pinch zoom stays available.
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b0f1a" },
-  ],
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={archivo.variable}>
       <body className="font-sans antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        {children}
         <Analytics />
       </body>
     </html>

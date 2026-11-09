@@ -7,6 +7,12 @@ export type L = { en: string; fr: string };
 
 export type Status = "live" | "building" | "shipped" | "research";
 
+/**
+ * The four kinds of work on the site. Each one owns a colour, used the same
+ * way everywhere: the hero system map, case-study tabs and the timeline.
+ */
+export type Domain = "retrieval" | "agents" | "cloud" | "product";
+
 export interface StackGroup {
   id: string;
   label: L;
@@ -15,6 +21,7 @@ export interface StackGroup {
 
 export interface CaseStudy {
   id: string;
+  domain: Domain;
   client: string;
   role: L;
   period: L;
@@ -41,6 +48,7 @@ export interface Project {
 
 export interface Role {
   id: string;
+  domain: Domain;
   org: string;
   title: L;
   kind: L;
@@ -74,10 +82,6 @@ export const identity = {
 /* ------------------------------------------------------------------ */
 
 export const hero = {
-  eyebrow: {
-    en: "AI · RAG · Agentic systems",
-    fr: "IA · RAG · Systèmes agentiques",
-  } as L,
   status: {
     en: "Available for freelance & full-time",
     fr: "Disponible en freelance et en CDI",
@@ -87,10 +91,10 @@ export const hero = {
     fr: "Je construis des systèmes RAG et multi-agents qui tournent en production.",
   } as L,
   lede: {
-    en: "I work on RAG architecture, LangGraph agent orchestration, and the GCP infrastructure under both. My graduation project runs inside OCP Group. I am currently building a hybrid-RAG platform on GCP for a client.",
-    fr: "Je travaille sur l'architecture RAG, l'orchestration d'agents LangGraph et l'infrastructure GCP qui porte les deux. Mon PFE tourne en interne au Groupe OCP. Je construis actuellement une plateforme RAG hybride sur GCP pour un client.",
+    en: "Search over large document collections, agents that act on what they find, and the Google Cloud infrastructure under both. Recent work: 1.8 million passages of Moroccan law searchable in French or Arabic, and a report-writing agent platform used inside OCP Group.",
+    fr: "La recherche dans de grands fonds documentaires, des agents qui agissent sur ce qu'ils trouvent, et l'infrastructure Google Cloud sous les deux. Récemment : 1,8 million de passages de droit marocain interrogeables en français ou en arabe, et une plateforme d'agents rédigeant des rapports, utilisée au Groupe OCP.",
   } as L,
-  primaryCta: { en: "Read the case study", fr: "Lire l'étude de cas" } as L,
+  primaryCta: { en: "See selected work", fr: "Voir les travaux" } as L,
   secondaryCta: { en: "Get in touch", fr: "Me contacter" } as L,
   portraitAlt: {
     en: "Portrait of Ibrahim Goumrane",
@@ -102,68 +106,84 @@ export const metrics: { value: string; label: L }[] = [
   {
     value: "1st",
     label: {
-      en: "Class rank at ENSAM Casablanca, certified",
-      fr: "Major de promotion à l'ENSAM Casablanca, certifié",
+      en: "in my class at ENSAM Casablanca",
+      fr: "de ma promotion à l'ENSAM Casablanca",
     },
   },
   {
-    value: "OCP",
+    value: "14+",
     label: {
-      en: "RAG platform in internal production at OCP Group",
-      fr: "Plateforme RAG en production interne au Groupe OCP",
-    },
-  },
-  {
-    value: "<300ms",
-    label: {
-      en: "p95 on a live delivery eligibility engine",
-      fr: "p95 sur un moteur d'éligibilité de livraison",
-    },
-  },
-  {
-    value: "6",
-    label: {
-      en: "Freelance clients delivered end to end",
-      fr: "Clients freelance livrés de bout en bout",
+      en: "clients I have worked with",
+      fr: "clients accompagnés",
     },
   },
 ];
 
 /* ------------------------------------------------------------------ */
-/* Positioning                                                         */
+/* Domains & system map                                                */
 /* ------------------------------------------------------------------ */
 
-export const positioning = {
-  title: { en: "What I do", fr: "Ce que je fais" } as L,
-  body: [
+export const domains: Record<Domain, L> = {
+  retrieval: { en: "Search & RAG", fr: "Recherche & RAG" },
+  agents: { en: "Agents & automation", fr: "Agents & automatisation" },
+  cloud: { en: "Cloud infrastructure", fr: "Infrastructure cloud" },
+  product: { en: "Product engineering", fr: "Ingénierie produit" },
+};
+
+/** The hero diagram: the system I usually build, with real proof per part. */
+export const systemMap = {
+  title: { en: "What I build, part by part", fr: "Ce que je construis, pièce par pièce" } as L,
+  input: {
+    label: { en: "Your documents", fr: "Vos documents" } as L,
+    detail: {
+      en: "Laws, court rulings, internal reports, scans, whole websites",
+      fr: "Lois, décisions de justice, rapports internes, scans, sites entiers",
+    } as L,
+  },
+  stages: [
     {
-      en: "Most of my work is retrieval design. How documents get decomposed, indexed, retrieved and reranked decides whether a model answers reliably over a corpus it never saw in training.",
-      fr: "L'essentiel de mon travail porte sur la conception du retrieval. La façon dont les documents sont décomposés, indexés, récupérés et reclassés détermine si un modèle répond de façon fiable sur un corpus qu'il n'a jamais vu à l'entraînement.",
+      domain: "retrieval" as Domain,
+      label: { en: "Find", fr: "Retrouver" } as L,
+      steps: [
+        { en: "Clean, deduplicate, split", fr: "Nettoyer, dédoublonner, découper" },
+        { en: "Embed and index", fr: "Vectoriser et indexer" },
+        { en: "Retrieve and rerank", fr: "Récupérer et reclasser" },
+      ] as L[],
+      proof: {
+        en: "1.8M legal passages, about 50ms per search",
+        fr: "1,8 M de passages juridiques, environ 50 ms par recherche",
+      } as L,
     },
     {
-      en: "On top of that I build the agent orchestration in LangGraph, with error recovery and human validation checkpoints. Underneath, the GCP infrastructure that runs it: Terraform, Cloud Run, Cloud SQL, Vertex AI.",
-      fr: "Par-dessus, je construis l'orchestration d'agents en LangGraph, avec reprise sur erreur et points de validation humaine. En dessous, l'infrastructure GCP qui la fait tourner : Terraform, Cloud Run, Cloud SQL, Vertex AI.",
+      domain: "agents" as Domain,
+      label: { en: "Reason", fr: "Raisonner" } as L,
+      steps: [
+        { en: "LangGraph agent graphs", fr: "Graphes d'agents LangGraph" },
+        { en: "MCP tools for Claude", fr: "Outils MCP pour Claude" },
+        { en: "Human checkpoints", fr: "Points de validation humaine" },
+      ] as L[],
+      proof: {
+        en: "Report platform in use at OCP Group",
+        fr: "Plateforme de rapports utilisée au Groupe OCP",
+      } as L,
     },
-    {
-      en: "I work freelance and solo, so I also scope the engagement, price it, and renegotiate when the spec moves.",
-      fr: "Je travaille en freelance et en solo : je cadre aussi la mission, je la chiffre et je renégocie quand le périmètre bouge.",
-    },
-  ] as L[],
-  focusTitle: { en: "Current focus", fr: "Focus actuel" } as L,
-  focus: [
-    {
-      en: "Hybrid RAG: Vertex AI RAG Engine paired with pgvector for filtered retrieval",
-      fr: "RAG hybride : Vertex AI RAG Engine associé à pgvector pour le retrieval filtré",
-    },
-    {
-      en: "LangGraph orchestration with human checkpoints and error recovery",
-      fr: "Orchestration LangGraph avec points de contrôle humains et reprise sur erreur",
-    },
-    {
-      en: "GCP infrastructure as code: Terraform, Workload Identity Federation, GitLab CI",
-      fr: "Infrastructure GCP as code : Terraform, Workload Identity Federation, GitLab CI",
-    },
-  ] as L[],
+  ],
+  output: {
+    label: { en: "An answer you can check", fr: "Une réponse vérifiable" } as L,
+    detail: {
+      en: "Each claim points back to its source passage",
+      fr: "Chaque affirmation renvoie à son passage source",
+    } as L,
+  },
+  base: {
+    domain: "cloud" as Domain,
+    label: { en: "All of it runs on", fr: "Le tout tourne sur" } as L,
+    items: ["Terraform", "Cloud Run", "Cloud SQL + pgvector", "Vertex AI", "Workload Identity"],
+    proof: {
+      en: "Provisioned as code for Seement",
+      fr: "Provisionné en code pour Seement",
+    } as L,
+  },
 };
 
 /* ------------------------------------------------------------------ */
@@ -171,7 +191,6 @@ export const positioning = {
 /* ------------------------------------------------------------------ */
 
 export const flagship = {
-  eyebrow: { en: "Flagship case study", fr: "Étude de cas principale" } as L,
   client: "OCP Solutions",
   clientNote: {
     en: "Groupe OCP subsidiary. Graduation project, defended 22 June 2026.",
@@ -306,90 +325,45 @@ export const flagship = {
 };
 
 /* ------------------------------------------------------------------ */
-/* Currently building                                                  */
-/* ------------------------------------------------------------------ */
-
-export const now = {
-  eyebrow: { en: "Currently building", fr: "En cours" } as L,
-  client: "Seement",
-  project: "fca-agentic-outlook",
-  title: {
-    en: "A hybrid-RAG platform on GCP, provisioned in Terraform",
-    fr: "Une plateforme RAG hybride sur GCP, provisionnée en Terraform",
-  } as L,
-  role: {
-    en: "Cloud / AI Infrastructure Engineer, freelance",
-    fr: "Ingénieur infrastructure cloud / IA, freelance",
-  } as L,
-  summary: {
-    en: "I own the GCP resource stack for an agentic RAG platform, plus part of the retrieval strategy. The engagement is active.",
-    fr: "Je prends en charge la stack de ressources GCP d'une plateforme RAG agentique, ainsi qu'une partie de la stratégie de retrieval. La mission est en cours.",
-  } as L,
-  threads: [
-    {
-      status: "building" as Status,
-      title: {
-        en: "Hybrid retrieval: Vertex AI RAG Engine + pgvector",
-        fr: "Retrieval hybride : Vertex AI RAG Engine + pgvector",
-      } as L,
-      body: {
-        en: "Vertex AI RAG Engine does strong semantic search over a large corpus, but its native filtering and metadata search are limited. pgvector handles the filtered queries. Combining both beats either alone.",
-        fr: "Vertex AI RAG Engine assure une recherche sémantique solide sur un gros corpus, mais son filtrage natif et sa recherche par métadonnées sont limités. pgvector prend en charge les requêtes filtrées. Combiner les deux dépasse chacun pris seul.",
-      } as L,
-    },
-    {
-      status: "building" as Status,
-      title: {
-        en: "The whole GCP stack as Terraform",
-        fr: "Toute la stack GCP en Terraform",
-      } as L,
-      body: {
-        en: "Cloud Run, Vertex AI RAG Engine, Cloud SQL and storage buckets, defined as code and applied from GitLab CI. The environment is reproducible instead of clicked together in a console.",
-        fr: "Cloud Run, Vertex AI RAG Engine, Cloud SQL et buckets de stockage, définis en code et appliqués depuis GitLab CI. L'environnement est reproductible au lieu d'être assemblé à la main dans une console.",
-      } as L,
-    },
-    {
-      status: "shipped" as Status,
-      title: {
-        en: "CI auth without service-account keys",
-        fr: "Authentification CI sans clé de compte de service",
-      } as L,
-      body: {
-        en: "GitLab CI authenticates to GCP through Workload Identity Federation instead of a long-lived JSON key. Nothing secret sits in the repository or the CI variables.",
-        fr: "GitLab CI s'authentifie à GCP via Workload Identity Federation plutôt qu'avec une clé JSON à longue durée de vie. Aucun secret ne se trouve dans le dépôt ni dans les variables CI.",
-      } as L,
-    },
-    {
-      status: "shipped" as Status,
-      title: {
-        en: "Private Cloud SQL through impersonation",
-        fr: "Cloud SQL privé par usurpation d'identité",
-      } as L,
-      body: {
-        en: "The Auth Proxy reaches a private Cloud SQL instance by impersonating a service account, so no developer account gets direct database access.",
-        fr: "L'Auth Proxy atteint une instance Cloud SQL privée en usurpant l'identité d'un compte de service, sans donner d'accès direct à la base à un compte développeur.",
-      } as L,
-    },
-  ],
-  stack: [
-    "Terraform",
-    "GCP",
-    "Vertex AI RAG Engine",
-    "pgvector",
-    "Cloud Run",
-    "Cloud SQL",
-    "GitLab CI",
-    "Workload Identity Federation",
-  ],
-};
-
-/* ------------------------------------------------------------------ */
 /* Case studies                                                        */
 /* ------------------------------------------------------------------ */
 
 export const caseStudies: CaseStudy[] = [
   {
+    id: "legal-rag",
+    domain: "retrieval",
+    client: "Moroccan law firm",
+    role: {
+      en: "Freelance, solo: data, search, cloud and MCP",
+      fr: "Freelance, en solo : données, recherche, cloud et MCP",
+    },
+    period: { en: "November 2026", fr: "Novembre 2026" },
+    status: "shipped",
+    hook: {
+      en: "Searching 1.8 million passages of Arabic case law by meaning, from a question asked in French.",
+      fr: "Chercher par le sens dans 1,8 million de passages de jurisprudence arabe, à partir d'une question posée en français.",
+    },
+    title: {
+      en: "An Arabic legal RAG served to Claude as a remote MCP connector",
+      fr: "Un RAG juridique arabe servi à Claude comme connecteur MCP distant",
+    },
+    problem: {
+      en: "The firm's library sat in about ten databases: legislation, Court of Cassation and appeal decisions, doctrine, and its own bank of past arguments, almost all in Arabic. Search ran through a local script on one computer that only matched exact words, and Arabic defeats exact matching: glued prefixes, optional vowel marks, variant letters.",
+      fr: "La bibliothèque du cabinet était répartie dans une dizaine de bases : législation, arrêts de la Cour de cassation et des cours d'appel, doctrine, et sa propre banque d'argumentaires, presque tout en arabe. La recherche passait par un script local sur un seul poste, limité aux mots exacts, or l'arabe déjoue la correspondance exacte : préfixes collés, voyelles facultatives, variantes de lettres.",
+    },
+    approach: {
+      en: "One reader per source, with deduplication of 191,000 decisions (an 80% word-overlap threshold, measured at 99% same case number), into Cloud SQL Postgres with pgvector. Vertex AI embeddings behind an HNSW index for search by meaning, plus Arabic-normalized full-text for exact words and case numbers. Six tools on a Cloud Run MCP server, including transactional updates from change files dropped in a bucket, dry-run by default.",
+      fr: "Un lecteur par source, avec dédoublonnage de 191 000 décisions (seuil de 80 % de mots communs, mesuré à 99 % de même numéro de dossier), vers Cloud SQL Postgres avec pgvector. Embeddings Vertex AI derrière un index HNSW pour la recherche par le sens, plus un plein texte arabe normalisé pour les mots exacts et les numéros de dossier. Six outils sur un serveur MCP Cloud Run, dont des mises à jour transactionnelles à partir de fichiers déposés dans un bucket, en simulation par défaut.",
+    },
+    outcome: {
+      en: "1,820,402 passages from 9 sources indexed, with searches by meaning in about 50ms in French or Arabic. The lawyer works only in Claude Desktop: searching, reading articles and updating the data all go through the connector. Embedding ran once as a parallel Cloud Run job (~120 USD), and I fixed a shared-memory crash in the HNSW build on Cloud SQL.",
+      fr: "1 820 402 passages issus de 9 sources indexés, avec une recherche par le sens en 50 ms environ, en français ou en arabe. L'avocat travaille uniquement dans Claude Desktop : recherche, lecture d'articles et mise à jour des données passent par le connecteur. L'embedding a tourné une seule fois en job Cloud Run parallèle (~120 USD), et j'ai corrigé un crash de mémoire partagée lors de la construction de l'index HNSW sur Cloud SQL.",
+    },
+    stack: ["Python", "pgvector", "HNSW", "Cloud Run", "Vertex AI", "MCP", "Claude"],
+  },
+  {
     id: "ditoco",
+    domain: "product",
     client: "DITOCO",
     role: {
       en: "Freelance engineer, 36 days in two phases",
@@ -421,6 +395,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "maroc-reforme",
+    domain: "product",
     client: "Maroc Réforme",
     role: {
       en: "Freelance engineer: spec, data model, implementation",
@@ -452,6 +427,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "pierron",
+    domain: "agents",
     client: "Pierron Olivier",
     role: {
       en: "Freelance, solo: scoping through hand-off",
@@ -483,6 +459,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "financiana",
+    domain: "product",
     client: "FINANCIANA",
     role: { en: "Technical Lead, freelance", fr: "Lead technique, freelance" },
     period: { en: "June – September 2025", fr: "Juin – septembre 2025" },
@@ -670,7 +647,21 @@ export const projects: Project[] = [
 
 export const roles: Role[] = [
   {
+    id: "legal-rag",
+    domain: "retrieval",
+    org: "Moroccan law firm",
+    title: { en: "RAG & Cloud Engineer", fr: "Ingénieur RAG & cloud" },
+    kind: { en: "Freelance, solo", fr: "Freelance, en solo" },
+    period: { en: "November 2026", fr: "Novembre 2026" },
+    summary: {
+      en: "Built a semantic search service over 1.8 million passages of Moroccan law (legislation, 191,000 court decisions, doctrine, the firm's past arguments), mostly in Arabic, on the firm's own Google Cloud. Postgres with pgvector and an HNSW index answers in about 50ms in French or Arabic, alongside Arabic-normalized keyword search. Exposed to Claude as a remote MCP connector with six tools, including all-or-nothing data updates the lawyer triggers from Claude Desktop.",
+      fr: "Service de recherche sémantique sur 1,8 million de passages de droit marocain (législation, 191 000 décisions de justice, doctrine, argumentaires du cabinet), majoritairement en arabe, sur le Google Cloud du cabinet. Postgres avec pgvector et un index HNSW répond en 50 ms environ en français ou en arabe, avec une recherche par mots-clés sur texte arabe normalisé. Exposé à Claude comme connecteur MCP distant à six outils, dont des mises à jour tout-ou-rien que l'avocat déclenche depuis Claude Desktop.",
+    },
+    stack: ["Python", "PostgreSQL", "pgvector", "Cloud Run", "Vertex AI", "MCP"],
+  },
+  {
     id: "seement",
+    domain: "cloud",
     org: "Seement",
     title: {
       en: "Cloud / AI Infrastructure Engineer",
@@ -687,6 +678,7 @@ export const roles: Role[] = [
   },
   {
     id: "ocp",
+    domain: "agents",
     org: "OCP Solutions",
     title: { en: "Agentic AI Engineer", fr: "Ingénieur IA agentique" },
     kind: { en: "Graduation project", fr: "Projet de fin d'études" },
@@ -699,6 +691,7 @@ export const roles: Role[] = [
   },
   {
     id: "pierron",
+    domain: "agents",
     org: "Pierron Olivier",
     title: {
       en: "Prospecting automation engineer",
@@ -714,6 +707,7 @@ export const roles: Role[] = [
   },
   {
     id: "ditoco",
+    domain: "product",
     org: "DITOCO",
     title: { en: "Freelance engineer", fr: "Ingénieur freelance" },
     kind: { en: "Freelance", fr: "Freelance" },
@@ -726,6 +720,7 @@ export const roles: Role[] = [
   },
   {
     id: "maroc-reforme",
+    domain: "product",
     org: "Maroc Réforme",
     title: { en: "Freelance engineer", fr: "Ingénieur freelance" },
     kind: { en: "Freelance, in development", fr: "Freelance, en développement" },
@@ -738,6 +733,7 @@ export const roles: Role[] = [
   },
   {
     id: "topnegoce",
+    domain: "agents",
     org: "Top Negoce",
     title: { en: "Automation Engineer", fr: "Ingénieur automatisation" },
     kind: { en: "Internship", fr: "Stage" },
@@ -750,6 +746,7 @@ export const roles: Role[] = [
   },
   {
     id: "formafast",
+    domain: "cloud",
     org: "Formafast Consulting",
     title: {
       en: "Automation & Systems Engineer",
@@ -765,6 +762,7 @@ export const roles: Role[] = [
   },
   {
     id: "financiana",
+    domain: "product",
     org: "FINANCIANA",
     title: { en: "Technical Lead", fr: "Lead technique" },
     kind: { en: "Freelance", fr: "Freelance" },
@@ -777,6 +775,7 @@ export const roles: Role[] = [
   },
   {
     id: "ehc",
+    domain: "product",
     org: "EHC → Recruite",
     title: { en: "Technical Lead", fr: "Lead technique" },
     kind: { en: "Internship → freelance", fr: "Stage → freelance" },
@@ -789,6 +788,7 @@ export const roles: Role[] = [
   },
   {
     id: "kanbanpro",
+    domain: "product",
     org: "Numeric Way",
     title: { en: "Software Development Intern", fr: "Stagiaire développement" },
     kind: { en: "Internship", fr: "Stage" },
@@ -893,26 +893,6 @@ export const stackGroups: StackGroup[] = [
   },
 ];
 
-/** Short marquee list for the hero ticker. */
-export const tickerItems = [
-  "LangGraph",
-  "Vertex AI RAG Engine",
-  "Milvus",
-  "pgvector",
-  "Terraform",
-  "FastAPI",
-  "Cloud Run",
-  "bge-reranker-v2-m3",
-  "Apache Airflow",
-  "Kubernetes",
-  "Spring Boot",
-  "Next.js",
-  "GitLab CI",
-  "Apache Spark",
-  "Qwen Embedding 4B",
-  "Model Context Protocol",
-];
-
 /* ------------------------------------------------------------------ */
 /* Education & recognition                                             */
 /* ------------------------------------------------------------------ */
@@ -978,7 +958,6 @@ export const recognition: L[] = [
 /* ------------------------------------------------------------------ */
 
 export const contact = {
-  eyebrow: { en: "Contact", fr: "Contact" } as L,
   title: {
     en: "Available for freelance and full-time work",
     fr: "Disponible en freelance et en CDI",
@@ -1007,19 +986,20 @@ export const contact = {
 export const ui = {
   nav: [
     { href: "#work", label: { en: "Work", fr: "Travaux" } as L },
-    { href: "#now", label: { en: "Now", fr: "En cours" } as L },
     { href: "#experience", label: { en: "Experience", fr: "Parcours" } as L },
     { href: "#projects", label: { en: "Projects", fr: "Projets" } as L },
-    { href: "#stack", label: { en: "Stack", fr: "Stack" } as L },
+    { href: "#toolbox", label: { en: "Tools", fr: "Outils" } as L },
     { href: "#contact", label: { en: "Contact", fr: "Contact" } as L },
   ],
   skipToContent: { en: "Skip to main content", fr: "Aller au contenu principal" } as L,
-  downloadCv: { en: "CV", fr: "CV" } as L,
   downloadCvLong: { en: "Download CV (PDF)", fr: "Télécharger le CV (PDF)" } as L,
   openMenu: { en: "Open navigation menu", fr: "Ouvrir le menu de navigation" } as L,
   closeMenu: { en: "Close navigation menu", fr: "Fermer le menu de navigation" } as L,
   toggleLanguage: { en: "Switch to French", fr: "Passer en anglais" } as L,
-  toggleTheme: { en: "Toggle colour theme", fr: "Changer de thème" } as L,
+  showMoreProjects: { en: "Show {n} more projects", fr: "Afficher {n} projets de plus" } as L,
+  showFewerProjects: { en: "Show fewer projects", fr: "Afficher moins de projets" } as L,
+  readDecisions: { en: "Why it was built this way", fr: "Pourquoi ces choix" } as L,
+  featured: { en: "Featured project", fr: "Projet phare" } as L,
   watchDemo: { en: "Watch demo", fr: "Voir la démo" } as L,
   closeVideo: { en: "Close video", fr: "Fermer la vidéo" } as L,
   viewOnGithub: { en: "View on GitHub", fr: "Voir sur GitHub" } as L,
@@ -1028,7 +1008,6 @@ export const ui = {
   theApproach: { en: "Approach", fr: "Approche" } as L,
   theOutcome: { en: "Outcome", fr: "Résultat" } as L,
   architecture: { en: "Pipeline", fr: "Pipeline" } as L,
-  decisions: { en: "Key decisions", fr: "Décisions clés" } as L,
   stackLabel: { en: "Stack", fr: "Stack" } as L,
   recognitionLabel: { en: "Recognition", fr: "Distinctions" } as L,
   availableForLabel: { en: "Available for", fr: "Disponible pour" } as L,
@@ -1040,29 +1019,27 @@ export const ui = {
     research: { en: "Research", fr: "Recherche" } as L,
   },
   sections: {
-    workEyebrow: { en: "Case studies", fr: "Études de cas" } as L,
     work: { en: "Selected work", fr: "Travaux sélectionnés" } as L,
-    workLede: { en: "Four client engagements.", fr: "Quatre missions clients." } as L,
-    projectsEyebrow: { en: "Archive", fr: "Archive" } as L,
-    projects: { en: "Project archive", fr: "Archive de projets" } as L,
-    projectsLede: {
-      en: "Personal, academic and side work.",
-      fr: "Travaux personnels, académiques et parallèles.",
+    workLede: {
+      en: "A graduation project now in production, and five client engagements.",
+      fr: "Un projet de fin d'études aujourd'hui en production, et cinq missions clients.",
     } as L,
-    experienceEyebrow: { en: "Timeline", fr: "Chronologie" } as L,
+    projects: { en: "Side projects", fr: "Projets personnels" } as L,
+    projectsLede: {
+      en: "Personal and academic work. The first five have video demos.",
+      fr: "Travaux personnels et académiques. Les cinq premiers ont une démo vidéo.",
+    } as L,
     experience: { en: "Experience", fr: "Parcours" } as L,
     experienceLede: {
-      en: "Some roles run concurrently: freelance work overlaps with employment.",
-      fr: "Certains rôles se chevauchent : le freelance recouvre des périodes salariées.",
+      en: "Some roles overlap: freelance work runs alongside employment.",
+      fr: "Certains rôles se chevauchent : le freelance accompagne les périodes salariées.",
     } as L,
-    stackEyebrow: { en: "Toolset", fr: "Outils" } as L,
-    stack: { en: "Stack", fr: "Stack" } as L,
-    stackLede: {
-      en: "Tools with real project work behind them.",
-      fr: "Des outils avec du vrai travail de projet derrière.",
+    toolbox: { en: "Tools and training", fr: "Outils et formation" } as L,
+    toolboxLede: {
+      en: "Only tools I have used on real projects.",
+      fr: "Uniquement des outils utilisés sur de vrais projets.",
     } as L,
-    educationEyebrow: { en: "Background", fr: "Formation" } as L,
-    education: { en: "Education & recognition", fr: "Formation & distinctions" } as L,
+    education: { en: "Education", fr: "Formation" } as L,
   },
   footerRights: { en: "All rights reserved.", fr: "Tous droits réservés." } as L,
   builtWith: {

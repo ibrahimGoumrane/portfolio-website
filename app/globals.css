@@ -4,157 +4,117 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ------------------------------------------------------------------
-   Light theme — high-contrast editorial fallback
+   Engineer's notebook: white paper, a faint blue grid, and four tile
+   colours taken from Moroccan zellige. Each colour stands for one kind
+   of work (see `Domain` in lib/content.ts) and is used only for that.
+
+   Each colour comes in three strengths:
+     fill  — solid shapes and large type
+     ink   — text on white or on its tint (all ≥ 4.5:1)
+     tint  — quiet backgrounds
    ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+  --paper: #ffffff;
+  --ink: #13152b;
+  --ink-soft: #565b76;
+  --rule: #dde2ee;
+  --grid-line: #e9eef9;
 
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --elevated: #f8fafc;
+  --cobalt: #2d5bff;
+  --cobalt-ink: #1d3fc4;
+  --cobalt-tint: #e9eeff;
 
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
+  --rose: #f0457e;
+  --rose-ink: #b8215a;
+  --rose-tint: #ffe8f0;
 
-  /* Violet — the AI/agentic signal */
-  --primary: #5b4be0;
+  --emerald: #12a06e;
+  --emerald-ink: #0b7450;
+  --emerald-tint: #e1f6ec;
+
+  --saffron: #ffc21a;
+  --saffron-ink: #8a5f00;
+  --saffron-tint: #fff4d2;
+
+  /* shadcn token names, mapped onto the palette above */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--cobalt);
   --primary-foreground: #ffffff;
-  --primary-accent: #5b4be0;
-  --primary-soft: #f1efff;
-
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-
-  --muted: #f8fafc;
-  --muted-foreground: #475569;
-
-  /* Mint — live / shipped / status */
-  --accent: #0e9f7e;
-  --accent-foreground: #ffffff;
-  --accent-soft: #e6f7f2;
-
-  --destructive: #dc2626;
+  --secondary: #f3f5fa;
+  --secondary-foreground: var(--ink);
+  --muted: #f3f5fa;
+  --muted-foreground: var(--ink-soft);
+  --accent: var(--emerald-tint);
+  --accent-foreground: var(--emerald-ink);
+  --destructive: #d92d20;
   --destructive-foreground: #ffffff;
+  --border: var(--rule);
+  --input: var(--rule);
+  --ring: var(--cobalt);
 
-  --border: #e2e8f0;
-  --border-strong: #cbd5e1;
-  --input: #e2e8f0;
-  --ring: #5b4be0;
+  --chart-1: var(--cobalt);
+  --chart-2: var(--rose);
+  --chart-3: var(--emerald);
+  --chart-4: var(--saffron);
+  --chart-5: var(--ink-soft);
 
-  --chart-1: #5b4be0;
-  --chart-2: #0e9f7e;
-  --chart-3: #6366f1;
-  --chart-4: #0891b2;
-  --chart-5: #7c3aed;
-
-  --radius: 0.75rem;
-
-  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.28, 0.42, 1);
-
-  --sidebar: #f8fafc;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #5b4be0;
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--cobalt);
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f1f5f9;
-  --sidebar-accent-foreground: #0f172a;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #5b4be0;
+  --sidebar-accent: #f3f5fa;
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--rule);
+  --sidebar-ring: var(--cobalt);
 
-  --shadow-color: #0f172a;
-  --shadow-opacity: 0.08;
-  --grid-line: rgba(15, 23, 42, 0.05);
-  --glow-primary: rgba(91, 75, 224, 0.16);
-  --glow-accent: rgba(14, 159, 126, 0.12);
-}
-
-/* ------------------------------------------------------------------
-   Dark theme — the default. Deep slate + violet + mint.
-   Fill violet #6d5df6 is 4.58:1 with white; text violet #a78bfa is 7:1 on bg.
-   ------------------------------------------------------------------ */
-.dark {
-  --background: #0b0f1a;
-  --foreground: #f1f5f9;
-
-  --card: #131a2a;
-  --card-foreground: #f1f5f9;
-  --elevated: #1a2234;
-
-  --popover: #131a2a;
-  --popover-foreground: #f1f5f9;
-
-  --primary: #6d5df6;
-  --primary-foreground: #ffffff;
-  --primary-accent: #a78bfa;
-  --primary-soft: rgba(109, 93, 246, 0.14);
-
-  --secondary: #1a2234;
-  --secondary-foreground: #f1f5f9;
-
-  --muted: #131a2a;
-  --muted-foreground: #94a3b8;
-
-  --accent: #22d3a8;
-  --accent-foreground: #04231b;
-  --accent-soft: rgba(34, 211, 168, 0.13);
-
-  --destructive: #f87171;
-  --destructive-foreground: #1a0606;
-
-  --border: #233049;
-  --border-strong: #35456a;
-  --input: #233049;
-  --ring: #a78bfa;
-
-  --chart-1: #a78bfa;
-  --chart-2: #22d3a8;
-  --chart-3: #60a5fa;
-  --chart-4: #f0abfc;
-  --chart-5: #fbbf24;
-
-  --sidebar: #0b0f1a;
-  --sidebar-foreground: #f1f5f9;
-  --sidebar-primary: #6d5df6;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1a2234;
-  --sidebar-accent-foreground: #f1f5f9;
-  --sidebar-border: #233049;
-  --sidebar-ring: #a78bfa;
-
-  --shadow-color: #000000;
-  --shadow-opacity: 0.4;
-  --grid-line: rgba(148, 163, 184, 0.07);
-  --glow-primary: rgba(109, 93, 246, 0.22);
-  --glow-accent: rgba(34, 211, 168, 0.14);
+  --radius: 0.625rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-rule: var(--rule);
+
+  --color-cobalt: var(--cobalt);
+  --color-cobalt-ink: var(--cobalt-ink);
+  --color-cobalt-tint: var(--cobalt-tint);
+  --color-rose: var(--rose);
+  --color-rose-ink: var(--rose-ink);
+  --color-rose-tint: var(--rose-tint);
+  --color-emerald: var(--emerald);
+  --color-emerald-ink: var(--emerald-ink);
+  --color-emerald-tint: var(--emerald-tint);
+  --color-saffron: var(--saffron);
+  --color-saffron-ink: var(--saffron-ink);
+  --color-saffron-tint: var(--saffron-tint);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-  --color-elevated: var(--elevated);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary-accent: var(--primary-accent);
-  --color-primary-soft: var(--primary-soft);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-accent-soft: var(--accent-soft);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-chart-1: var(--chart-1);
@@ -162,12 +122,6 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 6px);
-  --radius-2xl: calc(var(--radius) + 12px);
 
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -178,13 +132,11 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --shadow-2xs: 0 1px 2px color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 50%), transparent);
-  --shadow-xs: 0 1px 3px color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 60%), transparent);
-  --shadow-sm: 0 2px 6px color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 70%), transparent);
-  --shadow-md: 0 6px 18px color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 80%), transparent);
-  --shadow-lg: 0 12px 32px color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 90%), transparent);
-  --shadow-xl: 0 22px 55px color-mix(in srgb, var(--shadow-color) calc(var(--shadow-opacity) * 100%), transparent);
-  --shadow: var(--shadow-md);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 10px);
 }
 
 @layer base {
@@ -196,157 +148,96 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  /* Visible, high-contrast focus for keyboard users */
   :focus-visible {
-    outline: 2px solid var(--ring);
+    outline: 2px solid var(--cobalt);
     outline-offset: 3px;
     border-radius: 4px;
   }
   ::selection {
-    background: var(--primary);
-    color: var(--primary-foreground);
+    background: var(--saffron);
+    color: var(--ink);
   }
 }
 
 html {
   scroll-behavior: smooth;
-  /* keep anchor targets clear of the sticky header */
-  scroll-padding-top: 5.5rem;
+  /* keep anchor targets clear of the fixed header */
+  scroll-padding-top: 5rem;
 }
 
 /* ------------------------------------------------------------------
    Utilities
    ------------------------------------------------------------------ */
 
-/* Faint engineering grid behind the hero */
-.bg-grid {
+/* Archivo's width axis: headlines are set extra-wide, body stays normal */
+.wide {
+  font-stretch: 125%;
+}
+.semi-wide {
+  font-stretch: 112%;
+}
+
+/* Graph paper, 24px squares */
+.graph-paper {
+  background-color: var(--paper);
   background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 56px 56px;
-  background-position: center;
+  background-size: 24px 24px;
+  background-position: -1px -1px;
 }
 
-.mask-fade-b {
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
-}
-
-.mask-fade-x {
-  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 /* ------------------------------------------------------------------
-   Scroll reveal. `.is-visible` is applied by an IntersectionObserver.
-   Base entrance: rise + settle + focus-in. Variants below change the
-   direction or swap in a wipe for headlines.
+   The page's one orchestrated moment: on load, the system map's parts
+   appear in reading order and the connectors draw between them.
    ------------------------------------------------------------------ */
-.reveal {
-  opacity: 0;
-  transform: translate3d(0, 30px, 0) scale(0.985);
-  filter: blur(8px);
-  transition: opacity 780ms var(--ease-reveal),
-    transform 780ms var(--ease-reveal), filter 620ms var(--ease-reveal),
-    clip-path 900ms var(--ease-reveal);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-  filter: blur(0);
-}
-
-/* Side entrances for column content and the portrait */
-.reveal-left {
-  transform: translate3d(-36px, 0, 0) scale(0.99);
-}
-.reveal-right {
-  transform: translate3d(36px, 0, 0) scale(0.99);
-}
-.reveal-left.is-visible,
-.reveal-right.is-visible {
-  transform: translate3d(0, 0, 0) scale(1);
-}
-
-/* Headline wipe: the type is uncovered from the baseline up. Negative insets
-   on the settled state keep descenders and letter overhang from clipping. */
-.reveal-mask {
-  clip-path: inset(0 0 100% 0);
-  transform: translate3d(0, 0.12em, 0);
-  filter: blur(0);
-}
-.reveal-mask.is-visible {
-  clip-path: inset(-30% -15% -30% -15%);
-  transform: translate3d(0, 0, 0);
-}
-
-/* Slight overshoot, used only on small tiles where it reads as spring rather
-   than sloppiness */
-.reveal-pop {
-  transform: translate3d(0, 22px, 0) scale(0.95);
-  transition-timing-function: var(--ease-spring);
-}
-.reveal-pop.is-visible {
-  transform: translate3d(0, 0, 0) scale(1);
-}
-
-/* Slow marquee for the stack ticker */
-@keyframes marquee-x {
+@keyframes map-node-in {
   from {
-    transform: translate3d(0, 0, 0);
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
   }
   to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-.animate-marquee {
-  animation: marquee-x 46s linear infinite;
-}
-
-/* Pulsing availability dot */
-@keyframes status-pulse {
-  0%,
-  100% {
     opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.45;
-    transform: scale(1.5);
+    transform: none;
   }
 }
-.animate-status {
-  animation: status-pulse 2.4s ease-in-out infinite;
+@keyframes map-wire-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
-/* Reduced motion — render final states, stop decorative loops */
+.map-node {
+  animation: map-node-in 560ms var(--ease-out) both;
+  animation-delay: calc(var(--step, 0) * 260ms + 200ms);
+}
+.map-wire path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: map-wire-draw 420ms var(--ease-out) forwards;
+  animation-delay: calc(var(--step, 0) * 260ms + 340ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .reveal {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    clip-path: none !important;
-    transition: none !important;
-  }
-  .animate-marquee,
-  .animate-status {
-    animation: none !important;
+  .map-node,
+  .map-wire path {
+    animation: none;
+    opacity: 1;
+    stroke-dashoffset: 0;
   }
   *,
   *::before,
   *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-}
-
-/* Tabular figures so metrics do not jitter */
-.tnum {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum";
 }

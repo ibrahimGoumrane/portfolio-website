@@ -1,152 +1,201 @@
 "use client";
 
+import type React from "react";
 import Image from "next/image";
+import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/language-context";
-import { hero, identity, metrics, tickerItems } from "@/lib/content";
-import { GhostLink, PrimaryLink } from "./primitives";
+import { hero, identity, metrics, systemMap } from "@/lib/content";
+import { GhostLink, PrimaryLink, domainStyle } from "./primitives";
+
+/** Animation order for the system map; see `.map-node` in globals.css. */
+const step = (n: number) => ({ "--step": n }) as React.CSSProperties;
 
 export function Hero() {
   const { tr } = useLanguage();
 
   return (
-    <section id="top" className="relative overflow-hidden">
-      {/* Backdrop: engineering grid + two soft colour fields */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="bg-grid mask-fade-b absolute inset-0" />
-        <div
-          className="absolute -top-40 -left-32 size-[34rem] rounded-full blur-[110px]"
-          style={{ background: "var(--glow-primary)" }}
-        />
-        <div
-          className="absolute -top-24 right-0 size-[26rem] rounded-full blur-[110px]"
-          style={{ background: "var(--glow-accent)" }}
-        />
-      </div>
-
-      <div className="mx-auto w-full max-w-6xl px-5 pt-28 pb-16 sm:px-8 md:pt-36 md:pb-20 lg:px-10">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.35fr_1fr] lg:gap-16">
+    <section id="top" className="graph-paper relative border-b border-rule">
+      <div className="mx-auto w-full max-w-6xl px-4 pt-28 pb-16 sm:px-8 md:pt-32 md:pb-20 lg:px-10">
+        <div className="grid gap-12 lg:grid-cols-[1.55fr_1fr] lg:gap-16">
           <div>
-            <div className="reveal flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full border border-accent/35 bg-accent-soft px-3 py-1.5 text-xs font-medium text-accent">
-                <span
-                  aria-hidden="true"
-                  className="animate-status size-1.5 rounded-full bg-accent"
-                />
-                {tr(hero.status)}
-              </span>
-              <span className="font-mono text-xs tracking-[0.16em] text-muted-foreground uppercase">
-                {tr(hero.eyebrow)}
-              </span>
-            </div>
+            <p className="inline-flex items-center gap-2 rounded-full bg-emerald-tint px-3 py-1.5 text-sm font-medium text-emerald-ink">
+              <span aria-hidden="true" className="size-2 rounded-full bg-emerald" />
+              {tr(hero.status)}
+            </p>
 
-            <h1
-              className="reveal reveal-mask mt-6 text-[1.9rem] leading-[1.15] font-semibold tracking-tight text-balance sm:text-4xl lg:text-[2.75rem]"
-              style={{ "--reveal-delay": "60ms" } as React.CSSProperties}
-            >
+            <h1 className="wide mt-6 text-[2.15rem] leading-[1.02] font-extrabold tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]">
               {tr(hero.headline)}
             </h1>
 
-            <p
-              className="reveal mt-5 max-w-[58ch] text-base leading-relaxed text-muted-foreground"
-              style={{ "--reveal-delay": "120ms" } as React.CSSProperties}
-            >
+            <p className="mt-6 max-w-[60ch] text-base leading-relaxed text-ink-soft sm:text-lg">
               {tr(hero.lede)}
             </p>
 
-            <div
-              className="reveal mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
-              style={{ "--reveal-delay": "180ms" } as React.CSSProperties}
-            >
-              <PrimaryLink href="#flagship">{tr(hero.primaryCta)}</PrimaryLink>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <PrimaryLink href="#work">{tr(hero.primaryCta)}</PrimaryLink>
               <GhostLink href="#contact">{tr(hero.secondaryCta)}</GhostLink>
             </div>
 
-            <ul
-              className="reveal mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground"
-              style={{ "--reveal-delay": "240ms" } as React.CSSProperties}
-            >
-              <li>{tr(identity.location)}</li>
-              <li>
-                <a
-                  href={`mailto:${identity.email}`}
-                  className="underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                >
-                  {identity.email}
-                </a>
-              </li>
-            </ul>
+            <p className="mt-6 flex flex-col gap-1 text-sm text-ink-soft sm:flex-row sm:items-center sm:gap-3">
+              {tr(identity.location)}
+              <span aria-hidden="true" className="hidden size-1 rounded-full bg-rule sm:block" />
+              <a
+                href={`mailto:${identity.email}`}
+                className="font-medium text-cobalt-ink underline-offset-4 hover:underline"
+              >
+                {identity.email}
+              </a>
+            </p>
           </div>
 
-          {/* Portrait — decorative on small screens, so it is dropped there */}
-          <div
-            className="reveal reveal-right relative mx-auto hidden w-full max-w-sm lg:block"
-            style={{ "--reveal-delay": "160ms" } as React.CSSProperties}
-          >
-            <div
-              aria-hidden="true"
-              className="absolute -inset-6 rounded-[2rem] blur-3xl"
-              style={{ background: "var(--glow-primary)" }}
-            />
-            <div className="relative aspect-4/5 overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="mx-auto w-full max-w-xs lg:mx-0 lg:max-w-none">
+            <div className="relative aspect-4/5 overflow-hidden rounded-2xl border-2 border-ink bg-paper shadow-[10px_10px_0_var(--saffron)]">
               <Image
                 src="/main.jpeg"
                 alt={tr(hero.portraitAlt)}
                 fill
-                sizes="384px"
+                priority
+                sizes="(max-width: 1024px) 320px, 380px"
                 className="object-cover"
               />
-              {/* A soft vignette settles the photo into the card in dark mode
-                  without tinting the subject. */}
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 hidden dark:block"
-                style={{
-                  background:
-                    "radial-gradient(ellipse 78% 70% at 50% 40%, transparent 0%, transparent 55%, color-mix(in srgb, var(--card) 85%, transparent) 100%)",
-                }}
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-card/85 to-transparent"
-              />
             </div>
+
+            <dl className="mt-8 grid grid-cols-2 gap-3">
+              {metrics.map((metric, i) => (
+                <div
+                  key={metric.value}
+                  className={cn(
+                    "rounded-xl p-4",
+                    i === 0 ? "bg-cobalt text-white" : "bg-rose-tint text-ink"
+                  )}
+                >
+                  <dt className="wide tnum text-3xl leading-none font-extrabold">{metric.value}</dt>
+                  <dd className={cn("mt-2 text-sm leading-snug", i === 0 ? "text-white/90" : "text-rose-ink")}>
+                    {tr(metric.label)}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
 
-        {/* Proof strip */}
-        <dl
-          data-reveal-stagger="80"
-          className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border md:mt-20 md:grid-cols-4"
-        >
-          {metrics.map((metric) => (
-            <div key={metric.value} className="reveal reveal-pop bg-card p-5">
-              <dt className="tnum font-mono text-xl font-semibold text-primary-accent sm:text-2xl">
-                {metric.value}
-              </dt>
-              <dd className="mt-1.5 text-xs leading-snug text-muted-foreground sm:text-sm">
-                {tr(metric.label)}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-
-      {/* Stack ticker — decorative, hidden from assistive tech */}
-      <div
-        aria-hidden="true"
-        className="mask-fade-x relative overflow-hidden border-y border-border py-3"
-      >
-        <div className="animate-marquee flex w-max gap-8 pr-8">
-          {[...tickerItems, ...tickerItems].map((item, i) => (
-            <span
-              key={`${item}-${i}`}
-              className="font-mono text-xs tracking-wide whitespace-nowrap text-muted-foreground/70"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
+        <SystemMap />
       </div>
     </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* System map: documents → find → reason → answer, all on the cloud    */
+/* ------------------------------------------------------------------ */
+
+function SystemMap() {
+  const { tr } = useLanguage();
+  const base = domainStyle[systemMap.base.domain];
+
+  return (
+    <figure className="mt-16 md:mt-20">
+      <figcaption className="semi-wide mb-5 text-lg font-bold">{tr(systemMap.title)}</figcaption>
+
+      <div className="grid items-stretch gap-2 lg:grid-cols-[1fr_2.75rem_1.3fr_2.75rem_1.3fr_2.75rem_1fr] lg:gap-0">
+        <EndNode style={step(0)} label={tr(systemMap.input.label)} detail={tr(systemMap.input.detail)} />
+        <Wire style={step(0)} />
+
+        {systemMap.stages.map((stage, i) => {
+          const s = domainStyle[stage.domain];
+          return (
+            <div key={i} className="contents">
+              <article
+                style={step(i + 1)}
+                className={cn("map-node flex flex-col overflow-hidden rounded-xl border-2 bg-paper", s.border)}
+              >
+                <h3 className={cn("wide px-4 py-2.5 text-lg font-extrabold", s.fill, s.onFill)}>
+                  {tr(stage.label)}
+                </h3>
+                <ol className="flex-1 space-y-2 px-4 py-4">
+                  {stage.steps.map((item, j) => (
+                    <li key={j} className="flex items-baseline gap-2.5 text-sm">
+                      <span className={cn("tnum text-xs font-bold", s.ink)}>{j + 1}</span>
+                      {tr(item)}
+                    </li>
+                  ))}
+                </ol>
+                <p className={cn("flex items-start gap-2 px-4 py-3 text-sm font-medium", s.tint, s.ink)}>
+                  <Check className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                  {tr(stage.proof)}
+                </p>
+              </article>
+              <Wire style={step(i + 1)} />
+            </div>
+          );
+        })}
+
+        <EndNode style={step(3)} label={tr(systemMap.output.label)} detail={tr(systemMap.output.detail)} />
+      </div>
+
+      <div
+        style={step(4)}
+        className={cn(
+          "map-node mt-3 flex flex-col gap-3 rounded-xl border-2 px-4 py-3 sm:flex-row sm:flex-wrap sm:items-center",
+          base.border,
+          base.tint
+        )}
+      >
+        <p className={cn("text-sm font-bold", base.ink)}>{tr(systemMap.base.label)}</p>
+        <ul className="flex flex-wrap gap-1.5">
+          {systemMap.base.items.map((item) => (
+            <li key={item} className="rounded-md bg-paper px-2 py-1 text-xs font-medium text-ink">
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p className={cn("flex items-center gap-2 text-sm font-medium sm:ml-auto", base.ink)}>
+          <Check className="size-4 shrink-0" aria-hidden="true" />
+          {tr(systemMap.base.proof)}
+        </p>
+      </div>
+    </figure>
+  );
+}
+
+function EndNode({
+  label,
+  detail,
+  style,
+}: {
+  label: string;
+  detail: string;
+  style: React.CSSProperties;
+}) {
+  return (
+    <div
+      style={style}
+      className="map-node flex flex-col justify-center rounded-xl border-2 border-saffron bg-saffron-tint px-4 py-4"
+    >
+      <p className="semi-wide text-base font-bold">{label}</p>
+      <p className="mt-1.5 text-sm leading-snug text-saffron-ink">{detail}</p>
+    </div>
+  );
+}
+
+/** Connector: points down on narrow screens, right on wide ones. */
+function Wire({ style }: { style: React.CSSProperties }) {
+  return (
+    <div aria-hidden="true" className="grid h-8 place-items-center lg:h-auto">
+      <svg
+        viewBox="0 0 40 12"
+        style={style}
+        className="map-wire h-3 w-10 rotate-90 text-ink lg:rotate-0"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path pathLength={1} d="M3 6H35" />
+        <path pathLength={1} d="M30 1.5L35.5 6L30 10.5" />
+      </svg>
+    </div>
   );
 }
