@@ -29,8 +29,8 @@ export function Footer() {
 
             <div className="mt-6 flex flex-wrap items-center gap-3 text-sm">
               <a
-                href={identity.cv[language]}
-                download={`Ibrahim_Goumrane_CV_${language}.pdf`}
+                href={identity.cv}
+                download="Ibrahim_Goumrane_CV.pdf"
                 className="inline-flex min-h-11 items-center rounded-lg border-2 border-white px-4 font-semibold transition-colors duration-200 hover:bg-white hover:text-cobalt-ink"
               >
                 {tr(ui.downloadCvLong)}

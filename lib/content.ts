@@ -74,10 +74,8 @@ export const identity = {
   location: { en: "Casablanca, Morocco", fr: "Casablanca, Maroc" } as L,
   github: "https://github.com/ibrahimGoumrane",
   linkedin: "https://www.linkedin.com/in/ibrahim-goumrane",
-  cv: {
-    en: "/resume/Ibrahim_Goumrane_CV_en.pdf",
-    fr: "/resume/Ibrahim_Goumrane_CV_fr.pdf",
-  },
+  /** One CV, written in French, offered on both language versions. */
+  cv: "/resume/cv_ibrahim_goumrane.pdf",
 };
 
 /* ------------------------------------------------------------------ */
@@ -587,6 +585,55 @@ export const caseStudies: CaseStudy[] = [
 ];
 
 /* ------------------------------------------------------------------ */
+/* Testimonials                                                        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Client reviews left on Codeur.com. The originals are in French; the
+ * English versions are translations and are labelled as such.
+ */
+export const testimonials: {
+  id: string;
+  headline: L;
+  quote: L;
+  project: L;
+  date: L;
+}[] = [
+  {
+    id: "platform",
+    headline: {
+      en: "An exceptional developer, far beyond my expectations.",
+      fr: "Un développeur d'exception, très largement au-dessus de mes attentes.",
+    },
+    quote: {
+      en: "A project we had estimated at about two months of development was delivered in only three weeks of intensive work, with no compromise on quality. Communication was constant and very professional: regular progress updates, clear explanations of technical choices, problems raised immediately with solutions proposed before we had to ask. When external services had to be configured on my side, he prepared extremely detailed step-by-step procedures so I could do it without technical knowledge. I would work with Ibrahim again without the slightest hesitation.",
+      fr: "Un projet que nous avions initialement estimé à environ deux mois de développement a finalement été réalisé en seulement trois semaines de travail intensif, sans compromis sur la qualité. La communication était constante et très professionnelle : points réguliers sur l'avancement, explications claires des choix techniques, remontée immédiate des difficultés éventuelles et propositions de solutions sans attendre qu'on lui demande. Lorsque certaines plateformes ou services externes devaient être configurés de mon côté, il prenait le temps de me préparer des procédures extrêmement détaillées, étape par étape. Je retravaillerai avec Ibrahim sans la moindre hésitation.",
+    },
+    project: {
+      en: "Platform development and architecture",
+      fr: "Développement et architecture d'une plateforme",
+    },
+    date: { en: "September 2026", fr: "Septembre 2026" },
+  },
+  {
+    id: "parking",
+    headline: {
+      en: "Excellent developer, skilled and very professional.",
+      fr: "Excellent développeur, compétent et très professionnel !",
+    },
+    quote: {
+      en: "Ibrahim fully understood our needs and delivered high-quality work, quickly and with a lot of autonomy. Very responsive, available and full of ideas, he anticipates problems and brings effective solutions. A smooth, professional collaboration from start to finish. I highly recommend Ibrahim and won't hesitate to hire him again for future projects.",
+      fr: "Ibrahim a parfaitement compris nos besoins et a livré un travail de grande qualité, rapidement et avec beaucoup d'autonomie. Très réactif, disponible et force de proposition, il sait anticiper les problèmes et apporter des solutions efficaces. Une collaboration fluide et professionnelle du début à la fin. Je recommande vivement Ibrahim et je n'hésiterai pas à refaire appel à lui pour de futurs projets.",
+    },
+    project: {
+      en: "Parking-space booking website",
+      fr: "Site e-commerce de réservation de places de parking",
+    },
+    date: { en: "September 2026", fr: "Septembre 2026" },
+  },
+];
+
+/* ------------------------------------------------------------------ */
 /* Project archive                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -1090,7 +1137,7 @@ export const ui = {
     { href: "#contact", label: { en: "Contact", fr: "Contact" } as L },
   ],
   skipToContent: { en: "Skip to main content", fr: "Aller au contenu principal" } as L,
-  downloadCvLong: { en: "Download CV (PDF)", fr: "Télécharger le CV (PDF)" } as L,
+  downloadCvLong: { en: "Download CV (PDF, French)", fr: "Télécharger le CV (PDF)" } as L,
   openMenu: { en: "Open navigation menu", fr: "Ouvrir le menu de navigation" } as L,
   closeMenu: { en: "Close navigation menu", fr: "Fermer le menu de navigation" } as L,
   toggleLanguage: { en: "Version française", fr: "English version" } as L,
@@ -1098,6 +1145,8 @@ export const ui = {
   showFewerProjects: { en: "Show fewer projects", fr: "Afficher moins de projets" } as L,
   readDecisions: { en: "Why it was built this way", fr: "Pourquoi ces choix" } as L,
   featured: { en: "Featured project", fr: "Projet phare" } as L,
+  translatedFromFrench: { en: "Translated from French", fr: "" } as L,
+  verifiedReview: { en: "Client review on Codeur.com", fr: "Avis client sur Codeur.com" } as L,
   readCaseStudy: { en: "Read the full case study", fr: "Lire l'étude de cas complète" } as L,
   backToWork: { en: "All work", fr: "Tous les travaux" } as L,
   home: { en: "Home", fr: "Accueil" } as L,
@@ -1142,6 +1191,11 @@ export const ui = {
     experienceLede: {
       en: "Some roles overlap: freelance work runs alongside employment.",
       fr: "Certains rôles se chevauchent : le freelance accompagne les périodes salariées.",
+    } as L,
+    testimonials: { en: "What clients say", fr: "Ce qu'en disent mes clients" } as L,
+    testimonialsLede: {
+      en: "Reviews left by freelance clients on Codeur.com.",
+      fr: "Avis laissés par des clients freelance sur Codeur.com.",
     } as L,
     toolbox: { en: "Tools and training", fr: "Outils et formation" } as L,
     toolboxLede: {

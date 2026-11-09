@@ -119,8 +119,8 @@ export function Header() {
           </Link>
 
           <a
-            href={identity.cv[language]}
-            download={`Ibrahim_Goumrane_CV_${language}.pdf`}
+            href={identity.cv}
+            download="Ibrahim_Goumrane_CV.pdf"
             className="hidden h-11 items-center rounded-lg bg-cobalt px-4 text-sm font-semibold text-white transition-colors duration-200 hover:bg-cobalt-ink sm:inline-flex"
           >
             {tr(ui.downloadCvLong)}
@@ -162,8 +162,8 @@ export function Header() {
           </ul>
           <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-rule pt-4">
             <a
-              href={identity.cv[language]}
-              download={`Ibrahim_Goumrane_CV_${language}.pdf`}
+              href={identity.cv}
+              download="Ibrahim_Goumrane_CV.pdf"
               className="inline-flex min-h-11 items-center rounded-lg bg-cobalt px-4 text-sm font-semibold text-white"
             >
               {tr(ui.downloadCvLong)}
