@@ -10,6 +10,12 @@ permissions:
   pages: write
   id-token: write
 
+# Only one Pages deployment can run at a time: queue new runs behind the
+# current one instead of failing, and never cancel a deployment mid-way.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   # Build job
   build:
