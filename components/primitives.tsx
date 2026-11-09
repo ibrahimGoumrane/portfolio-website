@@ -11,13 +11,14 @@ import { domains, ui, type Domain, type L, type Status } from "@/lib/content";
 
 export const domainStyle: Record<
   Domain,
-  { fill: string; ink: string; tint: string; border: string; onFill: string }
+  { fill: string; ink: string; tint: string; border: string; edge: string; onFill: string }
 > = {
   retrieval: {
     fill: "bg-cobalt",
     ink: "text-cobalt-ink",
     tint: "bg-cobalt-tint",
     border: "border-cobalt",
+    edge: "border-l-cobalt",
     onFill: "text-white",
   },
   agents: {
@@ -25,6 +26,7 @@ export const domainStyle: Record<
     ink: "text-rose-ink",
     tint: "bg-rose-tint",
     border: "border-rose",
+    edge: "border-l-rose",
     onFill: "text-ink",
   },
   cloud: {
@@ -32,6 +34,7 @@ export const domainStyle: Record<
     ink: "text-emerald-ink",
     tint: "bg-emerald-tint",
     border: "border-emerald",
+    edge: "border-l-emerald",
     onFill: "text-ink",
   },
   product: {
@@ -39,6 +42,7 @@ export const domainStyle: Record<
     ink: "text-saffron-ink",
     tint: "bg-saffron-tint",
     border: "border-saffron",
+    edge: "border-l-saffron",
     onFill: "text-ink",
   },
 };

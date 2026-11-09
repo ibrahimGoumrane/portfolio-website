@@ -7,6 +7,8 @@ const nextConfig = {
     unoptimized: true,
   },
   output: "export",
+  // Every page becomes folder/index.html, which any static host serves.
+  trailingSlash: true,
 };
 
 export default nextConfig;

@@ -1,6 +1,7 @@
 /**
  * Single source of truth for every piece of copy and data on the site.
  * Everything is bilingual (EN / FR) and read through `useLanguage().tr()`.
+ * English lives at `/`, French at `/fr`; see lib/routes.ts.
  */
 
 export type L = { en: string; fr: string };
@@ -22,7 +23,7 @@ export interface StackGroup {
 export interface CaseStudy {
   id: string;
   domain: Domain;
-  client: string;
+  client: string | L;
   role: L;
   period: L;
   status: Status;
@@ -32,6 +33,8 @@ export interface CaseStudy {
   approach: L;
   outcome: L;
   stack: string[];
+  /** Extra detail shown only on the case study's own page. */
+  sections?: { title: L; points: L[] }[];
 }
 
 export interface Project {
@@ -49,7 +52,7 @@ export interface Project {
 export interface Role {
   id: string;
   domain: Domain;
-  org: string;
+  org: string | L;
   title: L;
   kind: L;
   period: L;
@@ -191,6 +194,11 @@ export const systemMap = {
 /* ------------------------------------------------------------------ */
 
 export const flagship = {
+  id: "ocp",
+  hook: {
+    en: "Documentary-analysis reports drafted by agents, with every claim traced back to a source.",
+    fr: "Des rapports d'analyse documentaire rédigés par des agents, chaque affirmation reliée à sa source.",
+  } as L,
   client: "OCP Solutions",
   clientNote: {
     en: "Groupe OCP subsidiary. Graduation project, defended 22 June 2026.",
@@ -332,7 +340,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "legal-rag",
     domain: "retrieval",
-    client: "Moroccan law firm",
+    client: { en: "Moroccan law firm", fr: "Cabinet d'avocats marocain" },
     role: {
       en: "Freelance, solo: data, search, cloud and MCP",
       fr: "Freelance, en solo : données, recherche, cloud et MCP",
@@ -360,6 +368,96 @@ export const caseStudies: CaseStudy[] = [
       fr: "1 820 402 passages issus de 9 sources indexés, avec une recherche par le sens en 50 ms environ, en français ou en arabe. L'avocat travaille uniquement dans Claude Desktop : recherche, lecture d'articles et mise à jour des données passent par le connecteur. L'embedding a tourné une seule fois en job Cloud Run parallèle (~120 USD), et j'ai corrigé un crash de mémoire partagée lors de la construction de l'index HNSW sur Cloud SQL.",
     },
     stack: ["Python", "pgvector", "HNSW", "Cloud Run", "Vertex AI", "MCP", "Claude"],
+    sections: [
+      {
+        title: { en: "Centralizing nine sources", fr: "Centraliser neuf sources" },
+        points: [
+          {
+            en: "One reader per source turns the firm's records into passages of about 1,500 characters, each tagged with court, case number, date, law, article and chamber.",
+            fr: "Un lecteur par source transforme les fiches du cabinet en passages d'environ 1 500 caractères, chacun annoté avec la juridiction, le numéro de dossier, la date, la loi, l'article et la chambre.",
+          },
+          {
+            en: "Legislation: one article per passage, prefixed with the law's title. Packing several short articles together ranked the right article worse in tests, so I reverted to one per passage.",
+            fr: "Législation : un article par passage, précédé du titre de la loi. Regrouper plusieurs articles courts classait moins bien le bon article lors des tests, je suis donc revenu à un article par passage.",
+          },
+          {
+            en: "Court decisions (191,000 decisions, 1.27 million passages): exact copies are dropped, and two transcriptions count as one decision when they share at least 80% of their words. I measured that threshold first: 99% of the pairs it matched had the same case number.",
+            fr: "Décisions de justice (191 000 décisions, 1,27 million de passages) : les copies exactes sont écartées, et deux transcriptions comptent comme une seule décision quand elles partagent au moins 80 % de leurs mots. J'ai d'abord mesuré ce seuil : 99 % des paires retenues avaient le même numéro de dossier.",
+          },
+          {
+            en: "Doctrine (2,000 books): passages never cross a page boundary, so every quotation can be cited with its page.",
+            fr: "Doctrine (2 000 ouvrages) : un passage ne franchit jamais une fin de page, ce qui permet de citer chaque extrait avec sa page.",
+          },
+          {
+            en: "The firm's argument bank: party names are hidden, the file reference is kept, and citations of laws and decisions are stored as a citation graph.",
+            fr: "La banque d'argumentaires du cabinet : les noms des parties sont masqués, la référence du dossier est conservée, et les citations de lois et de décisions forment un graphe de citations.",
+          },
+        ],
+      },
+      {
+        title: { en: "Arabic-aware search, two ways", fr: "Une recherche adaptée à l'arabe, de deux façons" },
+        points: [
+          {
+            en: "Search by meaning: Vertex AI gemini-embedding-001 vectors (768 dimensions) in Postgres with an HNSW index. A question in French finds Arabic passages, in about 50ms over 1.8 million vectors.",
+            fr: "Recherche par le sens : vecteurs Vertex AI gemini-embedding-001 (768 dimensions) dans Postgres avec un index HNSW. Une question en français retrouve des passages arabes, en 50 ms environ sur 1,8 million de vecteurs.",
+          },
+          {
+            en: "Exact words: Postgres full-text search on an Arabic-normalized column. Diacritics are stripped, letter variants folded and glued prefixes removed, while case numbers such as 2023/1/3/1543 stay one searchable token.",
+            fr: "Mots exacts : recherche plein texte Postgres sur une colonne d'arabe normalisé. Les signes diacritiques sont retirés, les variantes de lettres unifiées et les préfixes collés supprimés, tandis que les numéros de dossier comme 2023/1/3/1543 restent un seul terme cherchable.",
+          },
+          {
+            en: "Keyword results come with a count of matching documents per source, which gives the lawyer a coverage report.",
+            fr: "Les résultats par mots-clés indiquent le nombre de documents trouvés par source, ce qui donne à l'avocat un état de couverture.",
+          },
+        ],
+      },
+      {
+        title: { en: "Six tools Claude calls directly, over MCP", fr: "Six outils que Claude appelle directement, via MCP" },
+        points: [
+          {
+            en: "search_documents searches by meaning, filtered by source and date. search_keywords finds exact words and phrases, with OR and exclusions, plus counts per source.",
+            fr: "search_documents cherche par le sens, avec filtres par source et par date. search_keywords trouve des mots et expressions exacts, avec OU et exclusions, et des comptes par source.",
+          },
+          {
+            en: "get_article returns one article of a law, named by number, alias or title words, with the authoritative version first. get_document_chunks returns the full text of a decision, a book passage or an argument.",
+            fr: "get_article renvoie un article de loi, désignée par numéro, alias ou mots du titre, version de référence en premier. get_document_chunks renvoie le texte intégral d'une décision, d'un passage d'ouvrage ou d'un argumentaire.",
+          },
+          {
+            en: "find_arguments lists the firm's past arguments that cite a given law or article.",
+            fr: "find_arguments liste les argumentaires passés du cabinet qui citent une loi ou un article donné.",
+          },
+          {
+            en: "apply_changes applies an update file the lawyer drops in a private bucket. By default it only reports what would change; with apply=true it writes the whole file in one transaction, or nothing. Unchanged documents keep their vectors, so nothing is paid twice.",
+            fr: "apply_changes applique un fichier de mise à jour que l'avocat dépose dans un bucket privé. Par défaut il indique seulement ce qui changerait ; avec apply=true il écrit tout le fichier en une transaction, ou rien. Les documents inchangés gardent leurs vecteurs, rien n'est payé deux fois.",
+          },
+          {
+            en: "I also rewrote the firm's two Claude skills, legal research and drafting, to call these tools. The legal method itself was kept unchanged.",
+            fr: "J'ai aussi réécrit les deux skills Claude du cabinet, recherche juridique et rédaction, pour qu'ils appellent ces outils. La méthode juridique elle-même est restée inchangée.",
+          },
+        ],
+      },
+      {
+        title: { en: "Cloud operations", fr: "Exploitation cloud" },
+        points: [
+          {
+            en: "Embedding 1.8 million passages (about 790 million tokens, roughly 120 USD, paid once) ran as a Cloud Run job with 4 parallel tasks that resumes where it stopped and retries failures, so no computer had to stay on overnight.",
+            fr: "La vectorisation de 1,8 million de passages (environ 790 millions de tokens, quelque 120 USD, payés une fois) a tourné en job Cloud Run à 4 tâches parallèles, qui reprend là où il s'est arrêté et relance les échecs : aucun ordinateur n'a dû rester allumé la nuit.",
+          },
+          {
+            en: "The parallel HNSW index build crashed on Cloud SQL with \"could not resize shared memory segment\". I diagnosed it and built the index on a single worker with 6 GB of maintenance memory, in 56 minutes.",
+            fr: "La construction parallèle de l'index HNSW plantait sur Cloud SQL (« could not resize shared memory segment »). J'ai diagnostiqué la cause et construit l'index sur un seul worker avec 6 Go de mémoire de maintenance, en 56 minutes.",
+          },
+          {
+            en: "Security: the database is not open to the internet, secrets live in Secret Manager, runtime and developer service accounts are separate and the runtime has no key file, and the bucket is private. I also migrated the whole stack from us-east1 to europe-west1.",
+            fr: "Sécurité : la base n'est pas exposée à internet, les secrets sont dans Secret Manager, les comptes de service d'exécution et de développement sont séparés et celui d'exécution n'a aucun fichier de clé, et le bucket est privé. J'ai aussi migré toute la stack de us-east1 vers europe-west1.",
+          },
+          {
+            en: "The code stays small enough for one person to read in full, with 38 unit tests.",
+            fr: "Le code reste assez court pour être lu en entier par une seule personne, avec 38 tests unitaires.",
+          },
+        ],
+      },
+    ],
   },
   {
     id: "ditoco",
@@ -649,7 +747,7 @@ export const roles: Role[] = [
   {
     id: "legal-rag",
     domain: "retrieval",
-    org: "Moroccan law firm",
+    org: { en: "Moroccan law firm", fr: "Cabinet d'avocats marocain" },
     title: { en: "RAG & Cloud Engineer", fr: "Ingénieur RAG & cloud" },
     kind: { en: "Freelance, solo", fr: "Freelance, en solo" },
     period: { en: "November 2026", fr: "Novembre 2026" },
@@ -995,11 +1093,22 @@ export const ui = {
   downloadCvLong: { en: "Download CV (PDF)", fr: "Télécharger le CV (PDF)" } as L,
   openMenu: { en: "Open navigation menu", fr: "Ouvrir le menu de navigation" } as L,
   closeMenu: { en: "Close navigation menu", fr: "Fermer le menu de navigation" } as L,
-  toggleLanguage: { en: "Switch to French", fr: "Passer en anglais" } as L,
+  toggleLanguage: { en: "Version française", fr: "English version" } as L,
   showMoreProjects: { en: "Show {n} more projects", fr: "Afficher {n} projets de plus" } as L,
   showFewerProjects: { en: "Show fewer projects", fr: "Afficher moins de projets" } as L,
   readDecisions: { en: "Why it was built this way", fr: "Pourquoi ces choix" } as L,
   featured: { en: "Featured project", fr: "Projet phare" } as L,
+  readCaseStudy: { en: "Read the full case study", fr: "Lire l'étude de cas complète" } as L,
+  backToWork: { en: "All work", fr: "Tous les travaux" } as L,
+  home: { en: "Home", fr: "Accueil" } as L,
+  otherWork: { en: "More work", fr: "Autres travaux" } as L,
+  client: { en: "Client", fr: "Client" } as L,
+  role: { en: "Role", fr: "Rôle" } as L,
+  period: { en: "Period", fr: "Période" } as L,
+  similarProject: {
+    en: "Have a similar project? Email me.",
+    fr: "Un projet similaire ? Écrivez-moi.",
+  } as L,
   watchDemo: { en: "Watch demo", fr: "Voir la démo" } as L,
   closeVideo: { en: "Close video", fr: "Fermer la vidéo" } as L,
   viewOnGithub: { en: "View on GitHub", fr: "Voir sur GitHub" } as L,
@@ -1046,4 +1155,50 @@ export const ui = {
     en: "Built with Next.js and Tailwind CSS.",
     fr: "Construit avec Next.js et Tailwind CSS.",
   } as L,
+};
+
+/* ------------------------------------------------------------------ */
+/* Search engines                                                      */
+/* ------------------------------------------------------------------ */
+
+export const seo = {
+  homeTitle: {
+    en: "Ibrahim Goumrane | Freelance AI engineer: RAG, AI agents, Google Cloud",
+    fr: "Ibrahim Goumrane | Ingénieur IA freelance : RAG, agents IA, Google Cloud",
+  } as L,
+  homeDescription: {
+    en: "Freelance AI engineer in Casablanca, Morocco. I build RAG search over large document collections (including Arabic), LangGraph and MCP agents, and the Google Cloud infrastructure that runs them. Available for freelance and full-time work.",
+    fr: "Ingénieur IA freelance à Casablanca, Maroc. Je construis des moteurs de recherche RAG sur de grands fonds documentaires (y compris en arabe), des agents LangGraph et MCP, et l'infrastructure Google Cloud qui les fait tourner. Disponible en freelance et en CDI.",
+  } as L,
+  jobTitle: {
+    en: "Freelance AI engineer (RAG, AI agents, Google Cloud)",
+    fr: "Ingénieur IA freelance (RAG, agents IA, Google Cloud)",
+  } as L,
+  serviceName: {
+    en: "Ibrahim Goumrane, freelance AI engineering",
+    fr: "Ibrahim Goumrane, ingénierie IA freelance",
+  } as L,
+  services: [
+    { en: "RAG and semantic search development", fr: "Développement de RAG et de recherche sémantique" },
+    { en: "AI agent development (LangGraph, MCP)", fr: "Développement d'agents IA (LangGraph, MCP)" },
+    { en: "Google Cloud infrastructure for AI (Terraform)", fr: "Infrastructure Google Cloud pour l'IA (Terraform)" },
+    { en: "Arabic and multilingual document search", fr: "Recherche documentaire en arabe et multilingue" },
+  ] as L[],
+  knowsAbout: [
+    "Retrieval-augmented generation",
+    "Semantic search",
+    "AI agents",
+    "LangGraph",
+    "Model Context Protocol",
+    "Claude",
+    "Vector databases",
+    "pgvector",
+    "Milvus",
+    "Google Cloud Platform",
+    "Vertex AI",
+    "Terraform",
+    "Arabic natural language processing",
+    "FastAPI",
+    "Python",
+  ],
 };

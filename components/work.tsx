@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/language-context";
 import { caseStudies, flagship, ui } from "@/lib/content";
+import { casePath } from "@/lib/routes";
 import { DomainTag, Section, SectionHeading, StackList, StatusBadge, domainStyle } from "./primitives";
 
 export function Work() {
@@ -22,6 +24,20 @@ export function Work() {
 /* ------------------------------------------------------------------ */
 /* Featured: the OCP graduation project                                */
 /* ------------------------------------------------------------------ */
+
+/** Link to a case study's own page. */
+export function CaseLink({ slug, title }: { slug: string; title: string }) {
+  const { language, tr } = useLanguage();
+  return (
+    <Link
+      href={casePath(language, slug)}
+      className="inline-flex min-h-11 items-center rounded-lg bg-ink px-4 text-sm font-semibold text-white transition-colors duration-200 hover:bg-cobalt"
+    >
+      {tr(ui.readCaseStudy)}
+      <span className="sr-only">: {title}</span>
+    </Link>
+  );
+}
 
 function Featured() {
   const { tr } = useLanguage();
@@ -92,6 +108,10 @@ function Featured() {
           <h4 className="sr-only">{tr(ui.stackLabel)}</h4>
           <StackList items={flagship.stack} />
         </div>
+
+        <div className="mt-6">
+          <CaseLink slug={flagship.id} title={tr(flagship.title)} />
+        </div>
       </div>
     </article>
   );
@@ -133,7 +153,7 @@ function CaseList() {
               >
                 <span className="min-w-0 flex-1">
                   <span className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm font-bold">{study.client}</span>
+                    <span className="text-sm font-bold">{tr(study.client)}</span>
                     <DomainTag domain={study.domain} />
                     <StatusBadge status={study.status} />
                     <span className="text-xs text-ink-soft">{tr(study.period)}</span>
@@ -178,6 +198,9 @@ function CaseList() {
                 <h4 className="sr-only">{tr(ui.stackLabel)}</h4>
                 <StackList items={study.stack} />
                 <p className="text-xs text-ink-soft">{tr(study.role)}</p>
+              </div>
+              <div className="mt-5">
+                <CaseLink slug={study.id} title={tr(study.title)} />
               </div>
             </div>
           </article>

@@ -33,7 +33,7 @@ export function Experience() {
                 <h3 className="semi-wide text-lg leading-snug font-bold">
                   {tr(role.title)}
                   <span className="font-normal text-ink-soft">, </span>
-                  <span className={s.ink}>{role.org}</span>
+                  <span className={s.ink}>{tr(role.org)}</span>
                 </h3>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   <DomainTag domain={role.domain} />

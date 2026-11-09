@@ -1,13 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Github, Linkedin, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/language-context";
 import { identity, ui } from "@/lib/content";
+import { homePath, switchLanguagePath } from "@/lib/routes";
 
 export function Header() {
-  const { language, toggleLanguage, tr } = useLanguage();
+  const { language, tr } = useLanguage();
+  const pathname = usePathname() ?? homePath(language);
+  const home = homePath(language);
+  const onHome = pathname === home || `${pathname}/` === home;
+  const otherLanguage = language === "en" ? "fr" : "en";
+
+  // Section anchors live on the home page; the footer (#contact) is on every page.
+  const navHref = (hash: string) => (onHome || hash === "#contact" ? hash : `${home}${hash}`);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("");
@@ -22,6 +32,7 @@ export function Header() {
 
   // Highlight the section currently occupying the upper half of the viewport.
   useEffect(() => {
+    if (!onHome) return;
     const sections = ui.nav
       .map((item) => document.querySelector<HTMLElement>(item.href))
       .filter((el): el is HTMLElement => Boolean(el));
@@ -38,7 +49,7 @@ export function Header() {
     );
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
-  }, []);
+  }, [onHome]);
 
   // Escape closes the mobile sheet and returns focus to its trigger.
   useEffect(() => {
@@ -63,7 +74,7 @@ export function Header() {
       )}
     >
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-8 lg:px-10">
-        <a href="#top" className="flex items-center gap-2.5 rounded-md">
+        <Link href={home} className="flex items-center gap-2.5 rounded-md">
           <span
             aria-hidden="true"
             className="wide grid size-9 place-items-center rounded-lg bg-cobalt text-sm font-extrabold text-white"
@@ -72,7 +83,7 @@ export function Header() {
           </span>
           <span className="hidden text-sm font-semibold sm:inline">{identity.name}</span>
           <span className="sr-only sm:hidden">{identity.name}</span>
-        </a>
+        </Link>
 
         <nav aria-label="Primary" className="hidden lg:block">
           <ul className="flex items-center gap-1">
@@ -81,7 +92,7 @@ export function Header() {
               return (
                 <li key={item.href}>
                   <a
-                    href={item.href}
+                    href={navHref(item.href)}
                     aria-current={isActive ? "true" : undefined}
                     className={cn(
                       "flex h-10 items-center rounded-full px-3.5 text-sm font-medium transition-colors duration-200",
@@ -97,14 +108,15 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={toggleLanguage}
+          <Link
+            href={switchLanguagePath(pathname, otherLanguage)}
+            hrefLang={otherLanguage}
+            lang={otherLanguage}
             aria-label={tr(ui.toggleLanguage)}
-            className="inline-flex h-11 cursor-pointer items-center rounded-lg border border-rule bg-paper px-3 text-xs font-semibold text-ink-soft uppercase transition-colors duration-200 hover:border-ink hover:text-ink [touch-action:manipulation]"
+            className="inline-flex h-11 items-center rounded-lg border border-rule bg-paper px-3 text-xs font-semibold text-ink-soft uppercase transition-colors duration-200 hover:border-ink hover:text-ink"
           >
-            {language === "en" ? "FR" : "EN"}
-          </button>
+            {otherLanguage}
+          </Link>
 
           <a
             href={identity.cv[language]}
@@ -139,7 +151,7 @@ export function Header() {
             {ui.nav.map((item) => (
               <li key={item.href}>
                 <a
-                  href={item.href}
+                  href={navHref(item.href)}
                   onClick={() => setOpen(false)}
                   className="flex min-h-12 items-center rounded-md px-2 text-base font-medium text-ink hover:bg-muted"
                 >

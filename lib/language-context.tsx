@@ -1,67 +1,41 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, type ReactNode } from "react";
 import type { L } from "./content";
+import type { Language } from "./routes";
 
-export type Language = "en" | "fr";
+export type { Language };
 
 interface LanguageContextValue {
   language: Language;
-  setLanguage: (lang: Language) => void;
-  toggleLanguage: () => void;
-  /** Resolve a bilingual string for the active language. */
-  tr: (value: L) => string;
+  /** Resolve a bilingual string for the active language; plain strings pass through. */
+  tr: (value: L | string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
-const STORAGE_KEY = "ig-lang";
-
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("en");
-
-  // Restore the visitor's previous choice after hydration so the static
-  // export renders identically on the server and the first client pass.
-  useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      if (stored === "en" || stored === "fr") setLanguageState(stored);
-    } catch {
-      /* storage unavailable (private mode, blocked cookies) — keep the default */
-    }
-  }, []);
-
+/**
+ * The language comes from the URL (`/` or `/fr`), so each language is its
+ * own prerendered page that search engines can index.
+ */
+export function LanguageProvider({
+  language,
+  children,
+}: {
+  language: Language;
+  children: ReactNode;
+}) {
+  // The root layout is shared, so it always renders lang="en"; correct it here.
   useEffect(() => {
     document.documentElement.lang = language;
   }, [language]);
 
-  const setLanguage = useCallback((lang: Language) => {
-    setLanguageState(lang);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, lang);
-    } catch {
-      /* non-fatal */
-    }
-  }, []);
-
-  const toggleLanguage = useCallback(() => {
-    setLanguage(language === "en" ? "fr" : "en");
-  }, [language, setLanguage]);
-
-  const tr = useCallback((value: L) => value[language] ?? value.en, [language]);
-
-  const value = useMemo(
-    () => ({ language, setLanguage, toggleLanguage, tr }),
-    [language, setLanguage, toggleLanguage, tr]
+  const tr = useCallback(
+    (value: L | string) => (typeof value === "string" ? value : (value[language] ?? value.en)),
+    [language]
   );
+
+  const value = useMemo(() => ({ language, tr }), [language, tr]);
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
