@@ -6,7 +6,8 @@ import { Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/language-context";
 import { caseStudies, flagship, ui } from "@/lib/content";
-import { casePath } from "@/lib/routes";
+import { articlePath, casePath } from "@/lib/routes";
+import { articles } from "@/lib/articles";
 import { DomainTag, Section, SectionHeading, StackList, StatusBadge, domainStyle } from "./primitives";
 
 export function Work() {
@@ -122,7 +123,7 @@ function Featured() {
 /* ------------------------------------------------------------------ */
 
 function CaseList() {
-  const { tr } = useLanguage();
+  const { language, tr } = useLanguage();
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
@@ -199,8 +200,19 @@ function CaseList() {
                 <StackList items={study.stack} />
                 <p className="text-xs text-ink-soft">{tr(study.role)}</p>
               </div>
-              <div className="mt-5">
+              <div className="mt-5 flex flex-wrap gap-3">
                 <CaseLink slug={study.id} title={tr(study.title)} />
+                {articles
+                  .filter((a) => a.caseSlug === study.id)
+                  .map((a) => (
+                    <Link
+                      key={a.slug}
+                      href={articlePath(language, a.slug)}
+                      className="inline-flex min-h-11 items-center rounded-lg border-2 border-ink px-4 text-sm font-semibold transition-colors duration-200 hover:bg-muted"
+                    >
+                      {tr(ui.readArticle)}
+                    </Link>
+                  ))}
               </div>
             </div>
           </article>

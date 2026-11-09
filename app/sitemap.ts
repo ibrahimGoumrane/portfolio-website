@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { absolute, caseSlugs, casePath, homePath } from "@/lib/routes";
+import { absolute, articlePath, articleSlugs, caseSlugs, casePath, homePath } from "@/lib/routes";
 
 export const dynamic = "force-static";
 
@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     { en: homePath("en"), fr: homePath("fr"), priority: 1 },
     ...caseSlugs.map((slug) => ({ en: casePath("en", slug), fr: casePath("fr", slug), priority: 0.8 })),
+    ...articleSlugs.map((slug) => ({ en: articlePath("en", slug), fr: articlePath("fr", slug), priority: 0.8 })),
   ];
 
   return pages.flatMap(({ en, fr, priority }) =>

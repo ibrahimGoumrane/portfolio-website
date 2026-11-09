@@ -1170,6 +1170,12 @@ export const ui = {
   client: { en: "Client", fr: "Client" } as L,
   role: { en: "Role", fr: "Rôle" } as L,
   period: { en: "Period", fr: "Période" } as L,
+  readArticle: {
+    en: "Read the technical write-up",
+    fr: "Lire l'article technique",
+  } as L,
+  article: { en: "Article", fr: "Article" } as L,
+  relatedCase: { en: "See the case study", fr: "Voir l'étude de cas" } as L,
   similarProject: {
     en: "Have a similar project? Email me.",
     fr: "Un projet similaire ? Écrivez-moi.",

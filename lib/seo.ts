@@ -165,6 +165,53 @@ export function caseJsonLd({
   };
 }
 
+/** An article as a BlogPosting, plus its breadcrumb trail. */
+export function articleJsonLd({
+  lang,
+  title,
+  description,
+  path,
+  published,
+  keywords,
+  homeLabel,
+}: {
+  lang: Language;
+  title: string;
+  description: string;
+  path: string;
+  published: string;
+  keywords: string[];
+  homeLabel: string;
+}) {
+  const url = absolute(path);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        headline: title,
+        description,
+        url,
+        mainEntityOfPage: url,
+        inLanguage: lang,
+        datePublished: published,
+        dateModified: published,
+        image: absolute("/main.jpeg"),
+        keywords: keywords.join(", "),
+        author: { "@type": "Person", "@id": PERSON_ID, name: identity.name, url: absolute("/") },
+        publisher: { "@type": "Person", "@id": PERSON_ID, name: identity.name },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: homeLabel, item: absolute(homePath(lang)) },
+          { "@type": "ListItem", position: 2, name: title, item: url },
+        ],
+      },
+    ],
+  };
+}
+
 /** Renders structured data; `<` is escaped so content cannot close the tag. */
 export function jsonLdScript(data: unknown) {
   return { __html: JSON.stringify(data).replace(/</g, "\\u003c") };

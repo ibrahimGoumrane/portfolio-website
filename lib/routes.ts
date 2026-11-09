@@ -4,6 +4,7 @@
  * Paths end in "/" to match `trailingSlash: true` in next.config.mjs.
  */
 import { caseStudies, flagship } from "./content";
+import { articles } from "./articles";
 
 export type Language = "en" | "fr";
 
@@ -13,6 +14,13 @@ export const SITE_URL = "https://www.ibrahimgoumrane.dev";
 
 /** Every case study slug, the featured OCP project first. */
 export const caseSlugs: string[] = [flagship.id, ...caseStudies.map((c) => c.id)];
+
+/** Every article slug. */
+export const articleSlugs: string[] = articles.map((a) => a.slug);
+
+export function articlePath(lang: Language, slug: string) {
+  return `${homePath(lang)}articles/${slug}/`;
+}
 
 export function homePath(lang: Language) {
   return lang === "fr" ? "/fr/" : "/";

@@ -4,7 +4,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/language-context";
 import { identity, testimonials, ui } from "@/lib/content";
-import { caseSlugs, casePath, homePath } from "@/lib/routes";
+import { articlePath, caseSlugs, casePath, homePath } from "@/lib/routes";
+import { articles } from "@/lib/articles";
 import { getCase } from "@/lib/cases";
 import { DomainTag, StackList, StatusBadge, domainStyle } from "./primitives";
 
@@ -15,6 +16,7 @@ export function CaseStudyPage({ slug }: { slug: string }) {
 
   const s = domainStyle[view.domain];
   const testimonial = testimonials.find((t) => t.id === slug);
+  const article = articles.find((a) => a.caseSlug === slug);
   const others = caseSlugs.filter((other) => other !== slug).map((other) => getCase(other)!);
 
   return (
@@ -141,12 +143,22 @@ export function CaseStudyPage({ slug }: { slug: string }) {
           </div>
         </section>
 
-        <a
-          href={`mailto:${identity.email}`}
-          className="semi-wide inline-flex min-h-11 items-center rounded-lg bg-saffron px-5 py-3 text-base font-bold text-ink transition-colors duration-200 hover:bg-saffron-tint"
-        >
-          {tr(ui.similarProject)}
-        </a>
+        <div className="flex flex-wrap gap-3">
+          <a
+            href={`mailto:${identity.email}`}
+            className="semi-wide inline-flex min-h-11 items-center rounded-lg bg-saffron px-5 py-3 text-base font-bold text-ink transition-colors duration-200 hover:bg-saffron-tint"
+          >
+            {tr(ui.similarProject)}
+          </a>
+          {article && (
+            <Link
+              href={articlePath(language, article.slug)}
+              className="inline-flex min-h-11 items-center rounded-lg border-2 border-ink px-5 text-sm font-semibold transition-colors duration-200 hover:bg-muted"
+            >
+              {tr(ui.readArticle)}
+            </Link>
+          )}
+        </div>
       </div>
 
       <nav aria-labelledby="more-work" className="border-t border-rule bg-muted">
