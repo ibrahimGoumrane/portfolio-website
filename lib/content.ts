@@ -600,7 +600,7 @@ export const projects: Project[] = [
       fr: "Construit une base de connaissances à partir d'un site entier : scraping récursif multi-pages avec rendu JS, ranking hybride sémantique et TF-IDF, recherche FAISS, et un serveur MCP pour qu'un agent l'interroge.",
     },
     stack: ["Python", "OpenAI API", "FAISS", "Sentence Transformers", "Playwright", "MCP"],
-    github: "https://github.com/ibrahimGoumrane/DataProject",
+    github: "https://github.com/ibrahimGoumrane/website-rag-engine",
   },
   {
     id: "fastdev",
