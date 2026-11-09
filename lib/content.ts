@@ -589,16 +589,31 @@ export const caseStudies: CaseStudy[] = [
 /* ------------------------------------------------------------------ */
 
 /**
- * Client reviews left on Codeur.com. The originals are in French; the
- * English versions are translations and are labelled as such.
+ * Client testimonials, as the clients wrote them. The originals are in
+ * French; the English versions are translations and are labelled as such.
  */
 export const testimonials: {
   id: string;
-  headline: L;
+  /** The review's own title, when the client gave one. */
+  headline?: L;
   quote: L;
+  source: L;
   project: L;
   date: L;
 }[] = [
+  {
+    id: "legal-rag",
+    quote: {
+      en: "Ibrahim centralized our entire legal library, nearly two million passages of legislation, case law, doctrine and our own arguments, into a search engine hosted in the cloud. We query it in French or Arabic, and we update our databases, directly from our AI assistant, without installing anything. He turned our requirements as lawyers (the authoritative version of a text, the operative part of rulings, the confidentiality of the parties) into concrete solutions, while staying transparent about costs. Rigorous and highly professional work.",
+      fr: "Ibrahim a centralisé toute notre bibliothèque juridique, soit près de deux millions de passages de législation, de jurisprudence, de doctrine et de nos argumentaires, dans un moteur de recherche hébergé dans le cloud. Nous l'interrogeons en français ou en arabe, et nous mettons nos bases à jour, directement depuis notre assistant IA, sans rien installer. Il a su traduire nos exigences de juristes (version qui fait foi, dispositif des arrêts, confidentialité des parties) en solutions concrètes, tout en restant transparent sur les coûts. Un travail rigoureux et très professionnel.",
+    },
+    source: { en: "A Moroccan law firm", fr: "Un cabinet d'avocats marocain" },
+    project: {
+      en: "Arabic legal search engine (RAG)",
+      fr: "Moteur de recherche juridique arabe (RAG)",
+    },
+    date: { en: "November 2026", fr: "Novembre 2026" },
+  },
   {
     id: "platform",
     headline: {
@@ -609,6 +624,7 @@ export const testimonials: {
       en: "A project we had estimated at about two months of development was delivered in only three weeks of intensive work, with no compromise on quality. Communication was constant and very professional: regular progress updates, clear explanations of technical choices, problems raised immediately with solutions proposed before we had to ask. When external services had to be configured on my side, he prepared extremely detailed step-by-step procedures so I could do it without technical knowledge. I would work with Ibrahim again without the slightest hesitation.",
       fr: "Un projet que nous avions initialement estimé à environ deux mois de développement a finalement été réalisé en seulement trois semaines de travail intensif, sans compromis sur la qualité. La communication était constante et très professionnelle : points réguliers sur l'avancement, explications claires des choix techniques, remontée immédiate des difficultés éventuelles et propositions de solutions sans attendre qu'on lui demande. Lorsque certaines plateformes ou services externes devaient être configurés de mon côté, il prenait le temps de me préparer des procédures extrêmement détaillées, étape par étape. Je retravaillerai avec Ibrahim sans la moindre hésitation.",
     },
+    source: { en: "Client review on Codeur.com", fr: "Avis client sur Codeur.com" },
     project: {
       en: "Platform development and architecture",
       fr: "Développement et architecture d'une plateforme",
@@ -625,6 +641,7 @@ export const testimonials: {
       en: "Ibrahim fully understood our needs and delivered high-quality work, quickly and with a lot of autonomy. Very responsive, available and full of ideas, he anticipates problems and brings effective solutions. A smooth, professional collaboration from start to finish. I highly recommend Ibrahim and won't hesitate to hire him again for future projects.",
       fr: "Ibrahim a parfaitement compris nos besoins et a livré un travail de grande qualité, rapidement et avec beaucoup d'autonomie. Très réactif, disponible et force de proposition, il sait anticiper les problèmes et apporter des solutions efficaces. Une collaboration fluide et professionnelle du début à la fin. Je recommande vivement Ibrahim et je n'hésiterai pas à refaire appel à lui pour de futurs projets.",
     },
+    source: { en: "Client review on Codeur.com", fr: "Avis client sur Codeur.com" },
     project: {
       en: "Parking-space booking website",
       fr: "Site e-commerce de réservation de places de parking",
@@ -1146,7 +1163,6 @@ export const ui = {
   readDecisions: { en: "Why it was built this way", fr: "Pourquoi ces choix" } as L,
   featured: { en: "Featured project", fr: "Projet phare" } as L,
   translatedFromFrench: { en: "Translated from French", fr: "" } as L,
-  verifiedReview: { en: "Client review on Codeur.com", fr: "Avis client sur Codeur.com" } as L,
   readCaseStudy: { en: "Read the full case study", fr: "Lire l'étude de cas complète" } as L,
   backToWork: { en: "All work", fr: "Tous les travaux" } as L,
   home: { en: "Home", fr: "Accueil" } as L,
@@ -1194,8 +1210,8 @@ export const ui = {
     } as L,
     testimonials: { en: "What clients say", fr: "Ce qu'en disent mes clients" } as L,
     testimonialsLede: {
-      en: "Reviews left by freelance clients on Codeur.com.",
-      fr: "Avis laissés par des clients freelance sur Codeur.com.",
+      en: "In their own words: a direct client and two reviews from Codeur.com.",
+      fr: "Dans leurs propres mots : un client direct et deux avis Codeur.com.",
     } as L,
     toolbox: { en: "Tools and training", fr: "Outils et formation" } as L,
     toolboxLede: {

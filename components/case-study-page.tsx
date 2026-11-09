@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/language-context";
-import { identity, ui } from "@/lib/content";
+import { identity, testimonials, ui } from "@/lib/content";
 import { caseSlugs, casePath, homePath } from "@/lib/routes";
 import { getCase } from "@/lib/cases";
 import { DomainTag, StackList, StatusBadge, domainStyle } from "./primitives";
@@ -14,6 +14,7 @@ export function CaseStudyPage({ slug }: { slug: string }) {
   if (!view) return null;
 
   const s = domainStyle[view.domain];
+  const testimonial = testimonials.find((t) => t.id === slug);
   const others = caseSlugs.filter((other) => other !== slug).map((other) => getCase(other)!);
 
   return (
@@ -120,6 +121,18 @@ export function CaseStudyPage({ slug }: { slug: string }) {
             </ul>
           </section>
         ))}
+
+        {testimonial && (
+          <figure className="mb-12 rounded-2xl bg-cobalt p-6 text-white sm:p-8">
+            <blockquote className="semi-wide text-lg leading-relaxed font-medium sm:text-xl">
+              <p>{tr(testimonial.quote)}</p>
+            </blockquote>
+            <figcaption className="mt-5 text-sm text-white/85">
+              <span className="block font-bold text-white">{tr(testimonial.source)}</span>
+              {language === "en" && <span className="italic">{tr(ui.translatedFromFrench)}</span>}
+            </figcaption>
+          </figure>
+        )}
 
         <section className="mb-12">
           <h2 className={cn("semi-wide text-2xl font-extrabold", s.ink)}>{tr(ui.stackLabel)}</h2>
